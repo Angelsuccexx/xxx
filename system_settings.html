@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Settings - ANGELSUCCESS Cybersecurity</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0066ff;
+            --primary-light: #4d94ff;
+            --primary-dark: #0047b3;
+            --secondary: #00e6b8;
+            --danger: #ff4757;
+            --danger-light: #ff6b7a;
+            --warning: #ffa502;
+            --warning-light: #ffb732;
+            --success: #2ed573;
+            --success-light: #44e187;
+            --info: #1e90ff;
+            --dark: #0f1419;
+            --dark-light: #1e2328;
+            --darker: #0a0e12;
+            --text-light: #f1f2f6;
+            --text-muted: #a4b0be;
+            --card-bg: rgba(30, 35, 40, 0.7);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+            --glow: 0 0 15px rgba(0, 102, 255, 0.3);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            color: var(--text-light);
+            min-height: 100vh;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-light);
+        }
+        
+        .navbar {
+            background: rgba(15, 20, 25, 0.95);
+            backdrop-filter: blur(15px);
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--card-border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .logo i {
+            font-size: 1.8rem;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover {
+            color: var(--text-light);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .nav-links a:hover::before {
+            width: 100%;
+        }
+        
+        .nav-links a.active {
+            color: var(--text-light);
+            background: rgba(0, 102, 255, 0.1);
+        }
+        
+        .nav-links a.active::before {
+            width: 100%;
+        }
+        
+        .main-container {
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .page-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        
+        .page-title i {
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .page-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .settings-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .settings-column {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .settings-card {
+            background: linear-gradient(145deg, var(--card-bg) 0%, rgba(30, 35, 40, 0.9) 100%);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+        }
+        
+        .settings-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--card-border);
+        }
+        
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        
+        .card-icon {
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+        
+        .card-badge {
+            background: rgba(0, 102, 255, 0.2);
+            color: var(--primary);
+            padding: 0.35rem 0.85rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .setting-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .setting-item {
+            padding: 1.25rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .setting-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(0, 102, 255, 0.05) 0%, transparent 100%);
+            opacity: 0;
+            transition: var(--transition);
+        }
+        
+        .setting-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(5px);
+        }
+        
+        .setting-item:hover::before {
+            opacity: 1;
+        }
+        
+        .setting-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+        
+        .setting-label {
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+        
+        .setting-description {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #334155;
+            transition: var(--transition);
+            border-radius: 30px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background: linear-gradient(135deg, #ffffff, #f1f2f6);
+            transition: var(--transition);
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        input:checked + .slider {
+            background: linear-gradient(90deg, var(--success), var(--success-light));
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+        
+        .select-wrapper {
+            position: relative;
+            display: inline-block;
+            width: 220px;
+        }
+        
+        .select-wrapper select {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-light);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+            appearance: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .select-wrapper select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(0, 102, 255, 0.2);
+        }
+        
+        .select-wrapper::after {
+            content: '\f078';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+        
+        .range-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            width: 100%;
+        }
+        
+        .range-slider {
+            flex: 1;
+            -webkit-appearance: none;
+            height: 8px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+        }
+        
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            transition: var(--transition);
+        }
+        
+        .range-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+        }
+        
+        .range-value {
+            min-width: 50px;
+            text-align: center;
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            transition: var(--transition);
+        }
+        
+        .info-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+        }
+        
+        .info-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        
+        .info-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(0, 102, 255, 0.4);
+        }
+        
+        .btn-success {
+            background: linear-gradient(90deg, var(--success) 0%, var(--success-light) 100%);
+            box-shadow: 0 4px 12px rgba(46, 213, 115, 0.3);
+        }
+        
+        .btn-success:hover {
+            box-shadow: 0 6px 18px rgba(46, 213, 115, 0.4);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            box-shadow: none;
+        }
+        
+        .btn-outline:hover {
+            background: rgba(0, 102, 255, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 102, 255, 0.2);
+        }
+        
+        .btn-warning {
+            background: linear-gradient(90deg, var(--warning) 0%, var(--warning-light) 100%);
+            box-shadow: 0 4px 12px rgba(255, 165, 2, 0.3);
+        }
+        
+        .btn-warning:hover {
+            box-shadow: 0 6px 18px rgba(255, 165, 2, 0.4);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(90deg, var(--danger) 0%, var(--danger-light) 100%);
+            box-shadow: 0 4px 12px rgba(255, 71, 87, 0.3);
+        }
+        
+        .btn-danger:hover {
+            box-shadow: 0 6px 18px rgba(255, 71, 87, 0.4);
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--card-border);
+        }
+        
+        .backup-section {
+            background: linear-gradient(145deg, var(--card-bg) 0%, rgba(30, 35, 40, 0.9) 100%);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+        }
+        
+        .backup-section:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .backup-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .backup-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .backup-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            transition: var(--transition);
+        }
+        
+        .backup-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+        }
+        
+        .backup-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        
+        .backup-value {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        
+        .settings-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+        
+        .pulse {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(46, 213, 115, 0.7);
+            }
+            
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(46, 213, 115, 0);
+            }
+            
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(46, 213, 115, 0);
+            }
+        }
+        
+        /* Advanced Settings */
+        .advanced-settings {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            border-left: 4px solid var(--warning);
+        }
+        
+        .advanced-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            color: var(--warning);
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .advanced-content {
+            display: none;
+            margin-top: 0.75rem;
+        }
+        
+        .advanced-content.show {
+            display: block;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 1400px) {
+            .settings-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+            
+            .nav-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                gap: 0.5rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .main-container {
+                padding: 1rem;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .page-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .backup-actions {
+                flex-direction: column;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .backup-info {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>ANGELSUCCESS AI Cybersecurity</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="/network-monitor"><i class="fas fa-network-wired"></i> Network Monitor</a></li>
+                <li><a href="/ai-analysis"><i class="fas fa-robot"></i> AI Analysis</a></li>
+                <li><a href="/threat-intelligence"><i class="fas fa-bug"></i> Threat Intelligence</a></li>
+                <li><a href="/optimization-center"><i class="fas fa-cogs"></i> Optimization</a></li>
+                <li><a href="/system-settings" class="active"><i class="fas fa-sliders-h"></i> Settings</a></li>
+                <li><a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="page-header">
+            <h1 class="page-title">
+                <i class="fas fa-sliders-h"></i>
+                System Configuration
+            </h1>
+            <div class="page-actions">
+                <button class="btn btn-outline" onclick="exportSettings()">
+                    <i class="fas fa-download"></i> Export Settings
+                </button>
+                <button class="btn btn-warning" onclick="resetToDefaults()">
+                    <i class="fas fa-undo"></i> Reset Defaults
+                </button>
+            </div>
+        </div>
+        
+        <div class="settings-layout">
+            <div class="settings-column">
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-robot card-icon"></i>
+                            AI Model Configuration
+                        </h3>
+                        <span class="card-badge">Active</span>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <div class="setting-item">
+                            <div class="setting-header">
+                                <div>
+                                    <div class="setting-label">Supervised Learning</div>
+                                    <div class="setting-description">Enable supervised machine learning models for threat detection and classification</div>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="supervisedLearning" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-header">
+                                <div>
+                                    <div class="setting-label">Unsupervised Learning</div>
+                                    <div class="setting-description">Enable unsupervised anomaly detection algorithms for unknown threats</div>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="unsupervisedLearning" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-header">
+                                <div>
+                                    <div class="setting-label">Ensemble Model</div>
+                                    <div class="setting-description">Combine multiple AI models for improved accuracy and reliability</div>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="ensembleModel" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-header">
+                                <div>
+                                    <div class="setting-label">Auto Training</div>
+                                    <div class="setting-description">Automatically retrain models with new threat intelligence data</div>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="autoTraining">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="advanced-settings">
+                            <div class="advanced-header" onclick="toggleAdvanced('aiAdvanced')">
+                                <i class="fas fa-cogs"></i>
+                                <span>Advanced AI Settings</span>
+                                <i class="fas fa-chevron-down" id="aiAdvancedIcon"></i>
+                            </div>
+                            <div class="advanced-content" id="aiAdvanced">
+                                <div class="setting-item">
+                                    <div class="setting-header">
+                                        <div>
+                                            <div class="setting-label">Model Confidence Threshold</div>
+                                            <div class="setting-description">Minimum confidence level for threat classification</div>
+                                        </div>
+                                        <div class="range-container">
+                                            <input type="range" min="70" max="99" value="85" class="range-slider" id="confidenceThreshold">
+                                            <span class="range-value" id="confidenceValue">85%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <div class="setting-header">
+                                        <div>
+                                            <div class="setting-label">Training Data Retention</div>
+                                            <div class="setting-description">How long to keep training data for model improvement</div>
+                                        </div>
+                                        <div class="select-wrapper">
+                                            <select id="dataRetention">
+                                                <option value="30">30 days</option>
+                                                <option value="90">90 days</option>
+                                                <option value="180">180 days</option>
+                                                <option value="365">1 year</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-shield-alt card-icon"></i>
+                            Security Configuration
+                        </h3>
+                        <span class="card-badge">High</span>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <div class="setting-item">
+                            <div class="setting-header">
+                                <div>
+                                    <div class="setting-label">Threat Detection Level</div>
+                                    <div class="setting-description">Set sensitivity for threat detection algorithms</div>
+                                </div>
+                                <div class="select-wrapper">
+                                    <select id="threatDetectionLevel">
+                                        <option value="low">Low (Fewer alerts)</option>
+                                        <option value="medium">Medium (Balanced)</option>
+                                        <option value="high" selected>High (Maximum detection)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-header">
+                                <div>
+                                    <div class="setting-label">Auto Mitigation</div>
+                                    <div class="setting-description">Automatically respond to detected threats with predefined actions</div>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="autoMitigation" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-header">
+                                <div>
+                                    <div class="setting-label">False Positive Tuning</div>
+                                    <div class="setting-description">Automatically adjust detection algorithms to reduce false positives</div>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="falsePositiveTuning" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-header">
+                                <div>
+                                    <div class="setting-label">Real-time Monitoring</div>
+                                    <div class="setting-description">Enable continuous monitoring of network and system activities</div>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="realTimeMonitoring" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-column">
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-tachometer-alt card-icon"></i>
+                            Performance Settings
+                        </h3>
+                        <span class="card-badge">Optimized</span>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <div class="setting-item">
+                            <div class="setting-header">
+                                <div>
+                                    <div class="setting-label">Auto Optimization</div>
+                                    <div class="setting-description">Automatically optimize system performance based on usage patterns</div>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="autoOptimization" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-header">
+                                <div>
+                                    <div class="setting-label">Resource Monitoring</div>
+                                    <div class="setting-description">Monitor system resources and performance in real-time</div>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="resourceMonitoring" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-header">
+                                <div>
+                                    <div class="setting-label">Alert Threshold</div>
+                                    <div class="setting-description">Set threshold for system performance alerts and notifications</div>
+                                </div>
+                                <div class="range-container">
+                                    <input type="range" min="50" max="95" value="85" class="range-slider" id="alertThreshold">
+                                    <span class="range-value" id="thresholdValue">85%</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-header">
+                                <div>
+                                    <div class="setting-label">Background Processing</div>
+                                    <div class="setting-description">Allow background processing for AI model training and optimization</div>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="backgroundProcessing" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-info-circle card-icon"></i>
+                            System Information
+                        </h3>
+                        <span class="card-badge">v2.1.5</span>
+                    </div>
+                    
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">System Version</span>
+                            <span class="info-value">v2.1.5</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Last Updated</span>
+                            <span class="info-value" id="lastUpdated">Loading...</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Database Size</span>
+                            <span class="info-value" id="dbSize">Loading...</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Active Users</span>
+                            <span class="info-value" id="activeUsers">Loading...</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">System Uptime</span>
+                            <span class="info-value" id="systemUptime">Loading...</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">AI Models</span>
+                            <span class="info-value" id="aiModelsCount">3 Active</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Threat Database</span>
+                            <span class="info-value" id="threatDatabase">12,458 entries</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Last Scan</span>
+                            <span class="info-value" id="lastScan">2 hours ago</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-success" onclick="saveSettings()">
+                        <i class="fas fa-save"></i> Save Configuration
+                    </button>
+                    <button class="btn btn-outline" onclick="testSettings()">
+                        <i class="fas fa-vial"></i> Test Settings
+                    </button>
+                    <button class="btn btn-outline" onclick="validateSettings()">
+                        <i class="fas fa-check-circle"></i> Validate
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="backup-section">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-database card-icon"></i>
+                    Backup & Restore
+                </h3>
+                <span class="card-badge">Secure</span>
+            </div>
+            
+            <div class="backup-actions">
+                <button class="btn btn-outline" onclick="createBackup()">
+                    <i class="fas fa-plus"></i> Create Backup
+                </button>
+                <button class="btn btn-outline" onclick="restoreBackup()">
+                    <i class="fas fa-history"></i> Restore Backup
+                </button>
+                <button class="btn btn-warning" onclick="scheduleBackup()">
+                    <i class="fas fa-clock"></i> Schedule Backup
+                </button>
+                <button class="btn btn-danger" onclick="resetSystem()">
+                    <i class="fas fa-trash"></i> Reset System
+                </button>
+            </div>
+            
+            <div class="backup-info">
+                <div class="backup-item">
+                    <span class="backup-label">Last Backup</span>
+                    <span class="backup-value" id="lastBackup">Never</span>
+                </div>
+                <div class="backup-item">
+                    <span class="backup-label">Backup Size</span>
+                    <span class="backup-value" id="backupSize">0 MB</span>
+                </div>
+                <div class="backup-item">
+                    <span class="backup-label">Backup Location</span>
+                    <span class="backup-value">/backups/system/</span>
+                </div>
+                <div class="backup-item">
+                    <span class="backup-label">Auto Backup</span>
+                    <span class="backup-value">Disabled</span>
+                </div>
+                <div class="backup-item">
+                    <span class="backup-label">Encryption</span>
+                    <span class="backup-value">AES-256</span>
+                </div>
+                <div class="backup-item">
+                    <span class="backup-label">Integrity Check</span>
+                    <span class="backup-value">SHA-256</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="settings-indicator">
+            <span class="pulse"></span>
+            <span>Settings are automatically saved. Last save: <span id="lastSaveTime">Just now</span></span>
+        </div>
+    </div>
+
+    <script>
+        let settingsChanged = false;
+        let lastSave = new Date();
+        
+        function updateSystemInfo() {
+            document.getElementById('lastUpdated').textContent = new Date().toLocaleDateString();
+            document.getElementById('dbSize').textContent = '2.4 GB';
+            document.getElementById('activeUsers').textContent = '1';
+            document.getElementById('systemUptime').textContent = '12 days, 4 hours';
+            document.getElementById('lastBackup').textContent = '2 days ago';
+            document.getElementById('backupSize').textContent = '1.8 GB';
+            document.getElementById('lastSaveTime').textContent = 'Just now';
+        }
+
+        function setupEventListeners() {
+            // Update threshold value display
+            const thresholdSlider = document.getElementById('alertThreshold');
+            const thresholdValue = document.getElementById('thresholdValue');
+            
+            thresholdSlider.addEventListener('input', function() {
+                thresholdValue.textContent = this.value + '%';
+                markSettingsChanged();
+            });
+            
+            // Update confidence value display
+            const confidenceSlider = document.getElementById('confidenceThreshold');
+            const confidenceValue = document.getElementById('confidenceValue');
+            
+            confidenceSlider.addEventListener('input', function() {
+                confidenceValue.textContent = this.value + '%';
+                markSettingsChanged();
+            });
+            
+            // Add change listeners to settings
+            const settingsInputs = document.querySelectorAll('input, select');
+            settingsInputs.forEach(input => {
+                input.addEventListener('change', markSettingsChanged);
+            });
+        }
+
+        function markSettingsChanged() {
+            if (!settingsChanged) {
+                settingsChanged = true;
+                document.querySelector('.btn-success').innerHTML = '<i class="fas fa-save"></i> Save Changes*';
+            }
+        }
+
+        function toggleAdvanced(id) {
+            const content = document.getElementById(id);
+            const icon = document.getElementById(id + 'Icon');
+            
+            content.classList.toggle('show');
+            icon.classList.toggle('fa-chevron-down');
+            icon.classList.toggle('fa-chevron-up');
+        }
+
+        async function saveSettings() {
+            // Collect all settings
+            const settings = {
+                ai: {
+                    supervisedLearning: document.getElementById('supervisedLearning').checked,
+                    unsupervisedLearning: document.getElementById('unsupervisedLearning').checked,
+                    ensembleModel: document.getElementById('ensembleModel').checked,
+                    autoTraining: document.getElementById('autoTraining').checked,
+                    confidenceThreshold: document.getElementById('confidenceThreshold').value,
+                    dataRetention: document.getElementById('dataRetention').value
+                },
+                security: {
+                    threatDetectionLevel: document.getElementById('threatDetectionLevel').value,
+                    autoMitigation: document.getElementById('autoMitigation').checked,
+                    falsePositiveTuning: document.getElementById('falsePositiveTuning').checked,
+                    realTimeMonitoring: document.getElementById('realTimeMonitoring').checked
+                },
+                performance: {
+                    autoOptimization: document.getElementById('autoOptimization').checked,
+                    resourceMonitoring: document.getElementById('resourceMonitoring').checked,
+                    alertThreshold: document.getElementById('alertThreshold').value,
+                    backgroundProcessing: document.getElementById('backgroundProcessing').checked
+                }
+            };
+            
+            try {
+                showNotification('Saving system configuration...', 'info');
+                
+                // Simulate API call
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                settingsChanged = false;
+                lastSave = new Date();
+                document.querySelector('.btn-success').innerHTML = '<i class="fas fa-save"></i> Save Configuration';
+                document.getElementById('lastSaveTime').textContent = 'Just now';
+                
+                showNotification('System configuration saved successfully!', 'success');
+            } catch (error) {
+                console.error('Error saving settings:', error);
+                showNotification('Failed to save configuration', 'error');
+            }
+        }
+
+        function testSettings() {
+            showNotification('Testing current configuration...', 'info');
+            // Simulate testing
+            setTimeout(() => {
+                showNotification('Configuration test completed successfully!', 'success');
+            }, 2000);
+        }
+
+        function validateSettings() {
+            showNotification('Validating system configuration...', 'info');
+            // Simulate validation
+            setTimeout(() => {
+                showNotification('Configuration validation passed! All settings are compatible.', 'success');
+            }, 1500);
+        }
+
+        function exportSettings() {
+            showNotification('Exporting system configuration...', 'info');
+            // Simulate export
+            setTimeout(() => {
+                showNotification('Configuration exported successfully!', 'success');
+            }, 1000);
+        }
+
+        function resetToDefaults() {
+            if (confirm('Are you sure you want to reset all settings to factory defaults?')) {
+                // Reset all toggles and selects
+                document.getElementById('supervisedLearning').checked = true;
+                document.getElementById('unsupervisedLearning').checked = true;
+                document.getElementById('ensembleModel').checked = true;
+                document.getElementById('autoTraining').checked = false;
+                document.getElementById('confidenceThreshold').value = 85;
+                document.getElementById('confidenceValue').textContent = '85%';
+                document.getElementById('dataRetention').value = '90';
+                document.getElementById('threatDetectionLevel').value = 'high';
+                document.getElementById('autoMitigation').checked = true;
+                document.getElementById('falsePositiveTuning').checked = true;
+                document.getElementById('realTimeMonitoring').checked = true;
+                document.getElementById('autoOptimization').checked = true;
+                document.getElementById('resourceMonitoring').checked = true;
+                document.getElementById('alertThreshold').value = 85;
+                document.getElementById('thresholdValue').textContent = '85%';
+                document.getElementById('backgroundProcessing').checked = true;
+                
+                showNotification('Settings reset to factory defaults', 'success');
+                markSettingsChanged();
+            }
+        }
+
+        function createBackup() {
+            showNotification('Creating system backup...', 'info');
+            // Simulate backup creation
+            setTimeout(() => {
+                document.getElementById('lastBackup').textContent = 'Just now';
+                showNotification('System backup created successfully!', 'success');
+            }, 3000);
+        }
+
+        function restoreBackup() {
+            showNotification('Please select a backup file to restore', 'info');
+        }
+
+        function scheduleBackup() {
+            showNotification('Opening backup scheduling configuration...', 'info');
+        }
+
+        function resetSystem() {
+            if (confirm('WARNING: This will reset the entire system to factory defaults. All settings, data, and configurations will be permanently lost. Are you absolutely sure?')) {
+                if (confirm('This action cannot be undone. Type "RESET" to confirm:')) {
+                    showNotification('System reset initiated...', 'warning');
+                    // In a real application, this would trigger a system reset
+                }
+            }
+        }
+
+        function showNotification(message, type) {
+            // Create a notification element
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.style.cssText = `
+                position: fixed;
+                top: 30px;
+                right: 30px;
+                padding: 1rem 1.5rem;
+                border-radius: 12px;
+                color: white;
+                font-weight: 600;
+                z-index: 10000;
+                transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+                transform: translateX(400px);
+                opacity: 0;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+                background: ${type === 'success' ? 'linear-gradient(90deg, #2ed573, #44e187)' : 
+                            type === 'error' ? 'linear-gradient(90deg, #ff4757, #ff6b7a)' : 
+                            type === 'warning' ? 'linear-gradient(90deg, #ffa502, #ffb732)' : 
+                            'linear-gradient(90deg, #1e90ff, #4dabf7)'};
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                max-width: 400px;
+            `;
+            
+            const icon = type === 'success' ? 'fa-check-circle' : 
+                        type === 'error' ? 'fa-exclamation-circle' : 
+                        type === 'warning' ? 'fa-exclamation-triangle' : 'fa-info-circle';
+            
+            notification.innerHTML = `
+                <i class="fas ${icon}"></i>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+                notification.style.opacity = '1';
+            }, 100);
+            
+            // Remove after 4 seconds
+            setTimeout(() => {
+                notification.style.transform = 'translateX(400px)';
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 400);
+            }, 4000);
+        }
+
+        async function logout() {
+            try {
+                // In a real application, this would call your logout API
+                // await fetch('/api/auth/logout', { method: 'POST' });
+                window.location.href = '/auth';
+            } catch (error) {
+                console.error('Error logging out:', error);
+            }
+        }
+
+        // Initialize the dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            updateSystemInfo();
+            setupEventListeners();
+            
+            // Auto-save every 30 seconds if changes detected
+            setInterval(() => {
+                if (settingsChanged) {
+                    saveSettings();
+                }
+            }, 30000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ANGELSUCCESS - AI-Powered Cybersecurity Threat Detection</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0f172a;
+      --secondary: #1e293b;
+      --accent: #3b82f6;
+      --accent-glow: rgba(59, 130, 246, 0.4);
+      --danger: #ef4444;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --cyber-green: #00ff88;
+      --cyber-blue: #00d9ff;
+      --light: #f8fafc;
+      --dark: #0f172a;
+      --gray: #64748b;
+      --background: #0a0f1c;
+      --card-bg: rgba(30, 41, 59, 0.7);
+      --glass-bg: rgba(255, 255, 255, 0.05);
+      --border-glow: rgba(59, 130, 246, 0.3);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    body {
+      background: linear-gradient(135deg, var(--background) 0%, #1a2332 100%);
+      color: var(--light);
+      line-height: 1.6;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Splash Screen */
+    .splash-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, var(--primary) 0%, #1a2332 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
+
+    .splash-logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      animation: logoPulse 2s infinite alternate;
+    }
+
+    .splash-icon {
+      font-size: 5rem;
+      color: var(--cyber-blue);
+      text-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    .splash-text {
+      font-size: 3rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--cyber-blue), var(--cyber-green));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-align: center;
+    }
+
+    .splash-tagline {
+      margin-top: 10px;
+      color: var(--gray);
+      font-size: 1.2rem;
+      text-align: center;
+      max-width: 500px;
+    }
+
+    .loading-bar {
+      width: 200px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 2px;
+      margin-top: 30px;
+      overflow: hidden;
+    }
+
+    .loading-progress {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+      border-radius: 2px;
+      transition: width 2.5s ease;
+    }
+
+    @keyframes logoPulse {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.05); }
+    }
+
+    /* WhatsApp Floating Button */
+    .whatsapp-float {
+      position: fixed;
+      width: 60px;
+      height: 60px;
+      bottom: 25px;
+      right: 25px;
+      background-color: #25d366;
+      color: white;
+      border-radius: 50px;
+      text-align: center;
+      font-size: 30px;
+      box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      animation: pulse-whatsapp 2s infinite;
+    }
+
+    .whatsapp-float:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 25px rgba(37, 211, 102, 0.6);
+    }
+
+    @keyframes pulse-whatsapp {
+      0% { box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4); }
+      50% { box-shadow: 0 4px 25px rgba(37, 211, 102, 0.7); }
+      100% { box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4); }
+    }
+
+    /* Email Floating Button */
+    .email-float {
+      position: fixed;
+      width: 60px;
+      height: 60px;
+      bottom: 100px;
+      right: 25px;
+      background: linear-gradient(135deg, var(--accent), var(--cyber-blue));
+      color: white;
+      border-radius: 50px;
+      text-align: center;
+      font-size: 26px;
+      box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .email-float:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 25px rgba(59, 130, 246, 0.6);
+    }
+
+    /* Animated Background */
+    .cyber-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.1;
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(245, 158, 11, 0.05) 0%, transparent 50%);
+    }
+
+    .grid-pattern {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px);
+      background-size: 50px 50px;
+      z-index: -1;
+      opacity: 0.3;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    /* Header & Navigation */
+    header {
+      background: rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      transition: all 0.3s ease;
+    }
+
+    header.scrolled {
+      background: rgba(15, 23, 42, 0.95);
+      box-shadow: 0 5px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 0;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .logo-icon {
+      font-size: 2rem;
+      color: var(--cyber-blue);
+      text-shadow: 0 0 10px var(--accent-glow);
+    }
+    
+    .logo h1 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--cyber-blue), var(--cyber-green));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 2.5rem;
+    }
+    
+    .nav-links a {
+      text-decoration: none;
+      color: var(--light);
+      font-weight: 500;
+      transition: all 0.3s;
+      position: relative;
+      padding: 0.5rem 0;
+    }
+    
+    .nav-links a:hover {
+      color: var(--cyber-blue);
+    }
+    
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+      transition: width 0.3s;
+    }
+    
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+    
+    .auth-btn {
+      background: linear-gradient(135deg, var(--accent), var(--cyber-blue));
+      color: white;
+      padding: 10px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+    }
+    
+    .auth-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+    }
+    
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--light);
+      cursor: pointer;
+      padding: 5px;
+      border-radius: 4px;
+      transition: all 0.3s;
+    }
+
+    .mobile-menu-btn:hover {
+      background: rgba(59, 130, 246, 0.1);
+    }
+    
+    /* Mobile Menu */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 80px;
+      left: 0;
+      width: 100%;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(59, 130, 246, 0.2);
+      z-index: 999;
+      animation: slideDown 0.3s ease;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .mobile-menu.active {
+      display: block;
+    }
+    
+    .mobile-nav-links {
+      list-style: none;
+      padding: 2rem;
+    }
+    
+    .mobile-nav-links li {
+      margin-bottom: 1.5rem;
+    }
+    
+    .mobile-nav-links a {
+      text-decoration: none;
+      color: var(--light);
+      font-weight: 500;
+      font-size: 1.1rem;
+      display: block;
+      padding: 0.5rem 0;
+      transition: color 0.3s;
+    }
+
+    .mobile-nav-links a:hover {
+      color: var(--cyber-blue);
+    }
+    
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(135deg, var(--primary) 0%, #1a2332 100%);
+      color: white;
+      padding: 10rem 0 6rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%2300d9ff" fill-opacity="0.1" d="M0,128L48,117.3C96,107,192,85,288,112C384,139,480,213,576,218.7C672,224,768,160,864,138.7C960,117,1056,139,1152,149.3C1248,160,1344,160,1392,160L1440,160L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path></svg>');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.3;
+    }
+    
+    .hero-content {
+      max-width: 900px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .hero h2 {
+      font-size: 3.5rem;
+      margin-bottom: 1.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ffffff, var(--cyber-blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.2;
+    }
+    
+    .hero p {
+      font-size: 1.3rem;
+      margin-bottom: 2.5rem;
+      opacity: 0.9;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .hero-btns {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    .btn {
+      padding: 14px 32px;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--cyber-blue));
+      color: white;
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+    }
+    
+    .btn-secondary {
+      background: transparent;
+      color: white;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(10px);
+    }
+    
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--cyber-blue);
+      transform: translateY(-3px);
+    }
+
+    .cyber-pulse {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+    }
+    
+    /* Stats Section */
+    .stats {
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(59, 130, 246, 0.1);
+      padding: 4rem 0;
+      margin: 0 2rem;
+      border-radius: 16px;
+      position: relative;
+      top: -50px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    }
+    
+    .stats-container {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+    
+    .stat-item {
+      text-align: center;
+      flex: 1;
+      min-width: 200px;
+    }
+    
+    .stat-number {
+      font-size: 3rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--cyber-blue), var(--cyber-green));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+      font-size: 1.1rem;
+      color: var(--gray);
+      font-weight: 500;
+    }
+    
+    /* Section Styles */
+    section {
+      padding: 5rem 0;
+    }
+    
+    section h2 {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 3rem;
+      color: white;
+      position: relative;
+      font-weight: 700;
+    }
+    
+    section h2::after {
+      content: '';
+      position: absolute;
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 2px;
+    }
+    
+    /* About Section */
+    .subsections {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    
+    .subsection {
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      padding: 2.5rem 2rem;
+      border-radius: 16px;
+      border: 1px solid rgba(59, 130, 246, 0.1);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .subsection::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+      transition: left 0.6s;
+    }
+
+    .subsection:hover::before {
+      left: 100%;
+    }
+    
+    .subsection:hover {
+      transform: translateY(-5px);
+      border-color: rgba(59, 130, 246, 0.3);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+    
+    .subsection h3 {
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .subsection h3 i {
+      color: var(--cyber-blue);
+      font-size: 1.5rem;
+    }
+    
+    .subsection p {
+      color: var(--gray);
+      line-height: 1.7;
+    }
+    
+    /* Lectures Section */
+    #lectures {
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(59, 130, 246, 0.1);
+      border-bottom: 1px solid rgba(59, 130, 246, 0.1);
+    }
+    
+    /* Support Section */
+    #support {
+      text-align: center;
+    }
+    
+    #support > p {
+      max-width: 700px;
+      margin: 0 auto 3rem;
+      font-size: 1.1rem;
+      color: var(--gray);
+    }
+    
+    .pricing-cards {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-bottom: 3rem;
+    }
+    
+    .pricing-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      border-radius: 16px;
+      padding: 2.5rem 2rem;
+      border: 1px solid rgba(59, 130, 246, 0.1);
+      flex: 1;
+      min-width: 280px;
+      max-width: 350px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .pricing-card:hover {
+      transform: translateY(-10px);
+      border-color: rgba(59, 130, 246, 0.3);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    }
+    
+    .pricing-card.popular {
+      border: 2px solid var(--accent);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .pricing-card.popular::before {
+      content: 'MOST POPULAR';
+      position: absolute;
+      top: 15px;
+      right: -30px;
+      background: linear-gradient(135deg, var(--accent), var(--cyber-blue));
+      color: white;
+      padding: 5px 30px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transform: rotate(45deg);
+    }
+    
+    .pricing-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: white;
+    }
+    
+    .price {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--cyber-blue), var(--cyber-green));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1.5rem;
+    }
+    
+    .price span {
+      font-size: 1rem;
+      color: var(--gray);
+    }
+    
+    .features {
+      list-style: none;
+      margin-bottom: 2rem;
+      text-align: left;
+    }
+    
+    .features li {
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .features li i {
+      color: var(--success);
+    }
+    
+    .features li i.fa-times {
+      color: var(--gray);
+      opacity: 0.5;
+    }
+    
+    .pricing-btn {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, var(--accent), var(--cyber-blue));
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+    }
+    
+    .pricing-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+    }
+    
+    /* Free Plan Button */
+    .free-btn {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, var(--success), var(--cyber-green));
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+    }
+    
+    .free-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    }
+    
+    /* Trial Button */
+    .trial-btn {
+      width: 100%;
+      padding: 12px;
+      background: transparent;
+      color: var(--cyber-blue);
+      border: 2px solid var(--cyber-blue);
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 10px;
+    }
+    
+    .trial-btn:hover {
+      background: rgba(59, 130, 246, 0.1);
+      transform: translateY(-2px);
+    }
+    
+    .pricing-card.popular .trial-btn {
+      color: var(--cyber-blue);
+      border-color: var(--cyber-blue);
+    }
+    
+    .pricing-card.popular .trial-btn:hover {
+      background: rgba(59, 130, 246, 0.1);
+    }
+    
+    /* Testimonials */
+    .testimonials {
+      background: linear-gradient(135deg, var(--primary) 0%, #1a2332 100%);
+      color: white;
+      padding: 5rem 0;
+      border-top: 1px solid rgba(59, 130, 246, 0.1);
+      border-bottom: 1px solid rgba(59, 130, 246, 0.1);
+    }
+    
+    .testimonials h2 {
+      color: white;
+    }
+    
+    .testimonials-container {
+      display: flex;
+      gap: 2rem;
+      overflow-x: auto;
+      padding: 2rem 0;
+      scrollbar-width: thin;
+    }
+    
+    .testimonial {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      padding: 2rem;
+      border-radius: 16px;
+      min-width: 300px;
+      flex: 1;
+      border: 1px solid rgba(59, 130, 246, 0.1);
+    }
+    
+    .testimonial-text {
+      font-style: italic;
+      margin-bottom: 1.5rem;
+      line-height: 1.7;
+    }
+    
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .author-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--cyber-blue));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+    
+    .author-details h4 {
+      font-weight: 600;
+    }
+    
+    .author-details p {
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+    
+    /* Clients Section */
+    .clients {
+      padding: 4rem 0;
+      background: rgba(15, 23, 42, 0.7);
+    }
+    
+    .clients h2 {
+      margin-bottom: 2rem;
+    }
+    
+    .clients-container {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+    
+    .client-logo {
+      opacity: 0.6;
+      transition: all 0.3s;
+      filter: grayscale(100%);
+      max-width: 150px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: var(--cyber-blue);
+      background: var(--card-bg);
+      padding: 0 20px;
+      border-radius: 8px;
+      border: 1px solid rgba(59, 130, 246, 0.1);
+    }
+    
+    .client-logo:hover {
+      opacity: 1;
+      filter: grayscale(0);
+      transform: translateY(-5px);
+    }
+    
+    /* Newsletter */
+    .newsletter {
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      padding: 4rem 0;
+      text-align: center;
+      border-top: 1px solid rgba(59, 130, 246, 0.1);
+    }
+    
+    .newsletter-content {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .newsletter p {
+      margin-bottom: 2rem;
+      color: var(--gray);
+    }
+    
+    .newsletter-form {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .newsletter-form input {
+      flex: 1;
+      padding: 12px 15px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      font-size: 1rem;
+      color: white;
+    }
+
+    .newsletter-form input:focus {
+      outline: none;
+      border-color: var(--cyber-blue);
+    }
+    
+    .newsletter-form button {
+      padding: 12px 25px;
+      background: linear-gradient(135deg, var(--accent), var(--cyber-blue));
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .newsletter-form button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+    }
+    
+    .privacy-note {
+      font-size: 0.8rem;
+      color: var(--gray);
+    }
+    
+    /* Footer */
+    footer {
+      background: var(--dark);
+      color: white;
+      padding: 4rem 0 2rem;
+      border-top: 1px solid rgba(59, 130, 246, 0.1);
+    }
+    
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+    
+    .footer-column h3 {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      padding-bottom: 10px;
+    }
+    
+    .footer-column h3::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 40px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+    }
+    
+    .footer-links {
+      list-style: none;
+    }
+    
+    .footer-links li {
+      margin-bottom: 0.8rem;
+    }
+    
+    .footer-links a {
+      color: #cbd5e1;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    
+    .footer-links a:hover {
+      color: var(--cyber-blue);
+    }
+    
+    .footer-social {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    
+    .footer-social a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      color: white;
+      transition: all 0.3s;
+    }
+    
+    .footer-social a:hover {
+      background: var(--accent);
+      transform: translateY(-3px);
+    }
+    
+    .footer-bottom {
+      text-align: center;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .modal-content {
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      padding: 2.5rem;
+      border-radius: 16px;
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+    
+    .close-modal {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--gray);
+      transition: color 0.3s;
+    }
+
+    .close-modal:hover {
+      color: var(--cyber-blue);
+    }
+    
+    .payment-details {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin: 1.5rem 0;
+      border: 1px solid rgba(59, 130, 246, 0.1);
+    }
+    
+    .payment-details h4 {
+      margin-bottom: 1rem;
+      color: white;
+    }
+    
+    .payment-info {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 0.8rem;
+    }
+    
+    .payment-info strong {
+      color: var(--cyber-blue);
+    }
+    
+    /* Detail Page Styles */
+    .detail-page {
+      display: none;
+      padding: 7rem 0 3rem;
+    }
+    
+    .detail-page h2 {
+      text-align: left;
+      margin-bottom: 1.5rem;
+    }
+    
+    .detail-page h2::after {
+      left: 0;
+      transform: none;
+    }
+    
+    .back-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 2rem;
+      color: var(--cyber-blue);
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .back-button:hover {
+      gap: 12px;
+    }
+    
+    .detail-content {
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      padding: 2.5rem;
+      border-radius: 16px;
+      border: 1px solid rgba(59, 130, 246, 0.1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 900px) {
+      .nav-links, .auth-btn {
+        display: none;
+      }
+      
+      .mobile-menu-btn {
+        display: block;
+      }
+      
+      .hero h2 {
+        font-size: 2.5rem;
+      }
+      
+      .hero p {
+        font-size: 1.1rem;
+      }
+      
+      .hero-btns {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .stats-container {
+        flex-direction: column;
+        gap: 3rem;
+      }
+
+      .stats {
+        margin: 0 1rem;
+        top: -30px;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .logo h1 {
+        font-size: 1.5rem;
+      }
+      
+      .hero {
+        padding: 8rem 0 4rem;
+      }
+      
+      .hero h2 {
+        font-size: 2rem;
+      }
+      
+      section h2 {
+        font-size: 2rem;
+      }
+      
+      .pricing-cards {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .newsletter-form {
+        flex-direction: column;
+      }
+      
+      .payment-info {
+        grid-template-columns: 1fr;
+      }
+
+      .subsection {
+        padding: 2rem 1.5rem;
+      }
+
+      .splash-text {
+        font-size: 2.2rem;
+      }
+
+      .splash-tagline {
+        font-size: 1rem;
+        padding: 0 20px;
+      }
+    }
+    
+    /* Animation for stats */
+    @keyframes countUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .animated-stat {
+      animation: countUp 1s ease forwards;
+    }
+
+    /* Scroll animations */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <!-- Splash Screen -->
+  <div class="splash-screen" id="splashScreen">
+    <div class="splash-logo">
+      <i class="fas fa-shield-alt splash-icon"></i>
+      <div class="splash-text">ANGELSUCCESS</div>
+      <div class="splash-tagline">AI-Powered Cybersecurity Solutions</div>
+    </div>
+    <div class="loading-bar">
+      <div class="loading-progress" id="loadingProgress"></div>
+    </div>
+  </div>
+
+  <!-- WhatsApp Floating Button -->
+  <a href="https://wa.me/2348165109476" class="whatsapp-float" target="_blank" title="Contact us on WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+
+  <!-- Email Floating Button -->
+  <a href="mailto:angelsuccexx@gmail.com" class="email-float" title="Send us an email">
+    <i class="fas fa-envelope"></i>
+  </a>
+
+  <!-- Animated Background -->
+  <div class="cyber-bg"></div>
+  <div class="grid-pattern"></div>
+
+  <!-- Header & Navigation -->
+  <header id="main-header">
+    <div class="container">
+      <nav>
+        <div class="logo">
+          <i class="fas fa-shield-alt logo-icon"></i>
+          <h1>ANGELSUCCESS</h1>
+        </div>
+        
+        <ul class="nav-links">
+          <li><a href="#about">About</a></li>
+          <li><a href="#lectures">Training</a></li>
+          <li><a href="#support">Pricing</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        
+        <a href="/auth" class="auth-btn cyber-pulse">Access Dashboard</a>
+        
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+          <i class="fas fa-bars"></i>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <ul class="mobile-nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#lectures">Training</a></li>
+      <li><a href="#support">Pricing</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="/auth" class="auth-btn" style="display: inline-block; margin-top: 1rem; text-align: center;">Access Dashboard</a></li>
+    </ul>
+  </div>
+
+  <!-- Main Content -->
+  <main id="main-content">
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container hero-content">
+        <h2>AI-Powered Cybersecurity Threat Detection</h2>
+        <p>Advanced threat intelligence and real-time response powered by machine learning algorithms and behavioral analysis</p>
+        <div class="hero-btns">
+          <a href="#support" class="btn btn-primary cyber-pulse"><i class="fas fa-shield-alt"></i> Get Protected Now</a>
+          <a href="#about" class="btn btn-secondary"><i class="fas fa-play-circle"></i> Explore Platform</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats fade-in">
+      <div class="container stats-container">
+        <div class="stat-item">
+          <div class="stat-number" id="clientsCount">0</div>
+          <div class="stat-label">Protected Systems</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" id="threatsCount">0</div>
+          <div class="stat-label">Threats Neutralized</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" id="uptimeCount">0</div>
+          <div class="stat-label">% System Uptime</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" id="responseCount">0</div>
+          <div class="stat-label">Avg Response Time (ms)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 1: About the Company -->
+    <section id="about">
+      <div class="container">
+        <h2>Advanced Threat Intelligence Platform</h2>
+        <div class="subsections">
+          <!-- Subsections remain the same as original but with enhanced styling -->
+          <div class="subsection fade-in" data-detail="who-we-are">
+            <h3><i class="fas fa-users"></i> AI Threat Detection</h3>
+            <p>Real-time monitoring and analysis using advanced machine learning algorithms to detect anomalies and potential threats.</p>
+          </div>
+          <div class="subsection fade-in" data-detail="our-mission">
+            <h3><i class="fas fa-bullseye"></i> Behavioral Analysis</h3>
+            <p>Identify suspicious patterns and zero-day attacks through sophisticated user and entity behavior analytics.</p>
+          </div>
+          <div class="subsection fade-in" data-detail="our-vision">
+            <h3><i class="fas fa-eye"></i> Network Security</h3>
+            <p>Comprehensive network monitoring with deep packet inspection and intrusion detection systems.</p>
+          </div>
+          <div class="subsection fade-in" data-detail="core-values">
+            <h3><i class="fas fa-gem"></i> Endpoint Protection</h3>
+            <p>Advanced endpoint detection and response (EDR) with real-time threat hunting capabilities.</p>
+          </div>
+          <div class="subsection fade-in" data-detail="our-team">
+            <h3><i class="fas fa-user-tie"></i> Cloud Security</h3>
+            <p>Secure your cloud infrastructure with continuous monitoring and compliance management.</p>
+          </div>
+          <div class="subsection fade-in" data-detail="global-impact">
+            <h3><i class="fas fa-globe"></i> Threat Intelligence</h3>
+            <p>Global threat intelligence feeds with real-time updates on emerging cyber threats.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Cybersecurity Lectures -->
+    <section id="lectures">
+      <div class="container">
+        <h2>Security Training & Certifications</h2>
+        <div class="subsections">
+          <!-- Training subsections with enhanced styling -->
+          <div class="subsection fade-in" data-detail="intro-cybersecurity">
+            <h3><i class="fas fa-lock"></i> Threat Hunting</h3>
+            <p>Advanced techniques for proactive threat hunting and incident response procedures.</p>
+          </div>
+          <div class="subsection fade-in" data-detail="networking-basics">
+            <h3><i class="fas fa-network-wired"></i> SOC Operations</h3>
+            <p>Security Operations Center management and security information event management.</p>
+          </div>
+          <div class="subsection fade-in" data-detail="linux-security">
+            <h3><i class="fab fa-linux"></i> Digital Forensics</h3>
+            <p>Incident response and digital forensics for comprehensive attack analysis.</p>
+          </div>
+          <div class="subsection fade-in" data-detail="threat-intelligence">
+            <h3><i class="fas fa-brain"></i> Compliance Training</h3>
+            <p>GDPR, HIPAA, PCI-DSS compliance training and security framework implementation.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+      <div class="container">
+        <h2>Enterprise Security Success Stories</h2>
+        <div class="testimonials-container">
+          <div class="testimonial fade-in">
+            <div class="testimonial-text">
+              "ANGELSUCCESS's AI-driven platform reduced our incident response time by 80% and eliminated 95% of false positives. The threat intelligence is unparalleled."
+            </div>
+            <div class="testimonial-author">
+              <div class="author-avatar">JS</div>
+              <div class="author-details">
+                <h4>Sarah Johnson</h4>
+                <p>CISO, Financial Services</p>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial fade-in">
+            <div class="testimonial-text">
+              "The behavioral analytics detected an insider threat that traditional tools missed. ANGELSUCCESS paid for itself in the first month of implementation."
+            </div>
+            <div class="testimonial-author">
+              <div class="author-avatar">MR</div>
+              <div class="author-details">
+                <h4>Michael Rodriguez</h4>
+                <p>CTO, Healthcare Solutions</p>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial fade-in">
+            <div class="testimonial-text">
+              "Implementation was seamless, and the 24/7 monitoring has given us peace of mind. The AI models continuously improve their detection capabilities."
+            </div>
+            <div class="testimonial-author">
+              <div class="author-avatar">AD</div>
+              <div class="author-details">
+                <h4>Amanda Davis</h4>
+                <p>Security Director, TechCorp</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Support & Payment -->
+    <section id="support">
+      <div class="container">
+        <h2>Enterprise Security Plans</h2>
+        <p>Advanced protection powered by AI and machine learning. Choose the plan that fits your security needs.</p>
+
+        <div class="pricing-cards">
+          <!-- Free Plan -->
+          <div class="pricing-card fade-in">
+            <h3>Starter</h3>
+            <div class="price">$0 <span>/month</span></div>
+            <ul class="features">
+              <li><i class="fas fa-check"></i> Basic Threat Monitoring</li>
+              <li><i class="fas fa-check"></i> Limited AI Detection</li>
+              <li><i class="fas fa-check"></i> Community Support</li>
+              <li><i class="fas fa-check"></i> Monthly Reports</li>
+              <li><i class="fas fa-times"></i> Advanced Analytics</li>
+              <li><i class="fas fa-times"></i> Priority Response</li>
+            </ul>
+            <button class="free-btn" onclick="window.location.href='/free-access'">Get Started Free</button>
+          </div>
+          
+          <!-- Professional Plan (Most Popular) -->
+          <div class="pricing-card popular fade-in">
+            <h3>Professional</h3>
+            <div class="price">$49 <span>/month</span></div>
+            <ul class="features">
+              <li><i class="fas fa-check"></i> Advanced AI Monitoring</li>
+              <li><i class="fas fa-check"></i> Behavioral Analysis</li>
+              <li><i class="fas fa-check"></i> 24/7 Priority Support</li>
+              <li><i class="fas fa-check"></i> Real-time Dashboards</li>
+              <li><i class="fas fa-check"></i> Threat Intelligence</li>
+              <li><i class="fas fa-check"></i> Custom Alerts</li>
+            </ul>
+            <button class="pricing-btn" onclick="showPaymentModal('Professional Suite', 49)">Get Protected</button>
+            <button class="trial-btn" onclick="window.location.href='/auth'">Start 30-Day Trial</button>
+          </div>
+          
+          <!-- Enterprise Plan -->
+          <div class="pricing-card fade-in">
+            <h3>Enterprise</h3>
+            <div class="price">$199 <span>/month</span></div>
+            <ul class="features">
+              <li><i class="fas fa-check"></i> Enterprise AI Monitoring</li>
+              <li><i class="fas fa-check"></i> Advanced Threat Hunting</li>
+              <li><i class="fas fa-check"></i> Dedicated 24/7 Support</li>
+              <li><i class="fas fa-check"></i> Custom Reporting</li>
+              <li><i class="fas fa-check"></i> API Integration</li>
+              <li><i class="fas fa-check"></i> SOC Integration</li>
+            </ul>
+            <button class="pricing-btn" onclick="showPaymentModal('Enterprise Solution', 199)">Contact Sales</button>
+            <button class="trial-btn" onclick="window.location.href='/auth'">Request Demo</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Clients Section -->
+    <section class="clients">
+      <div class="container">
+        <h2>Trusted by Security Teams</h2>
+        <div class="clients-container">
+          <div class="client-logo fade-in">TechSecure</div>
+          <div class="client-logo fade-in">FinShield</div>
+          <div class="client-logo fade-in">DataGuard</div>
+          <div class="client-logo fade-in">CloudArmor</div>
+          <div class="client-logo fade-in">NetDefend</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter">
+      <div class="container">
+        <div class="newsletter-content">
+          <h2>Stay Ahead of Threats</h2>
+          <p>Subscribe for security insights, threat intelligence reports, and platform updates.</p>
+          <form class="newsletter-form" id="newsletterForm">
+            <input type="email" placeholder="Enter your work email" required>
+            <button type="submit">Subscribe</button>
+          </form>
+          <p class="privacy-note">We respect your privacy. Your information is protected by enterprise-grade security.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer id="contact">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-column">
+          <h3>ANGELSUCCESS</h3>
+          <p>Advanced AI-powered cybersecurity solutions for modern enterprises. Protecting your digital assets with cutting-edge technology.</p>
+          <div class="footer-social">
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#"><i class="fab fa-github"></i></a>
+            <a href="#"><i class="fab fa-medium-m"></i></a>
+          </div>
+        </div>
+        
+        <div class="footer-column">
+          <h3>Platform</h3>
+          <ul class="footer-links">
+            <li><a href="#about">Threat Detection</a></li>
+            <li><a href="#lectures">Security Training</a></li>
+            <li><a href="#support">Pricing</a></li>
+            <li><a href="#">API Documentation</a></li>
+            <li><a href="#">Status</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h3>Resources</h3>
+          <ul class="footer-links">
+            <li><a href="#">Threat Intelligence</a></li>
+            <li><a href="#">Security Blog</a></li>
+            <li><a href="#">Whitepapers</a></li>
+            <li><a href="#">Case Studies</a></li>
+            <li><a href="#">Compliance</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h3>Contact</h3>
+          <ul class="footer-links">
+            <li><i class="fas fa-map-marker-alt"></i> Security Operations Center</li>
+            <li><i class="fas fa-phone"></i> +234 816 510 9476</li>
+            <li><i class="fas fa-envelope"></i> angelsuccexx@gmail.com</li>
+            <li><i class="fas fa-clock"></i> 24/7 Threat Response</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2025 ANGELSUCCESS Cybersecurity. All rights reserved. | <a href="#">Security</a> | <a href="#">Privacy</a> | <a href="#">Compliance</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Payment Modal -->
+  <div class="modal" id="paymentModal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeModal()">&times;</span>
+      <h2>Enterprise Security Activation</h2>
+      <p>You've selected: <strong id="selectedPlan">Professional Suite</strong></p>
+      
+      <div class="payment-details">
+        <h4>Security Package Details</h4>
+        <div class="payment-info">
+          <strong>Plan:</strong> <span id="planName">Professional Suite</span>
+          <strong>Amount:</strong> $<span id="planPrice">49</span>/month
+          <strong>Billing:</strong> Monthly Subscription
+          <strong>Support:</strong> 24/7 Priority
+        </div>
+      </div>
+      
+      <form id="paymentForm">
+        <div style="margin-bottom: 1rem;">
+          <label for="email">Enterprise Email</label>
+          <input type="email" id="email" placeholder="your.company@enterprise.com" required style="width: 100%; padding: 12px; margin-top: 5px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white;">
+        </div>
+        
+        <button type="submit" class="pricing-btn" style="width: 100%;">Activate Security Suite</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Detail Pages -->
+  <div id="detail-pages">
+    <!-- This is where detail pages will be loaded -->
+  </div>
+
+  <script>
+    // Enhanced JavaScript with modern features
+    document.addEventListener('DOMContentLoaded', function() {
+      // Splash screen functionality
+      const splashScreen = document.getElementById('splashScreen');
+      const loadingProgress = document.getElementById('loadingProgress');
+      
+      // Simulate loading progress
+      let progress = 0;
+      const progressInterval = setInterval(() => {
+        progress += Math.random() * 15;
+        if (progress >= 100) {
+          progress = 100;
+          clearInterval(progressInterval);
+          
+          // Hide splash screen after loading completes
+          setTimeout(() => {
+            splashScreen.style.opacity = '0';
+            splashScreen.style.visibility = 'hidden';
+          }, 500);
+        }
+        loadingProgress.style.width = `${progress}%`;
+      }, 200);
+
+      // Header scroll effect
+      const header = document.getElementById('main-header');
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 100) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      });
+
+      // Mobile menu functionality
+      const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+      const mobileMenu = document.getElementById('mobileMenu');
+
+      mobileMenuBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        mobileMenu.classList.toggle('active');
+      });
+
+      // Close mobile menu when clicking outside
+      document.addEventListener('click', function(event) {
+        if (!event.target.closest('.mobile-menu') && !event.target.closest('.mobile-menu-btn')) {
+          mobileMenu.classList.remove('active');
+        }
+      });
+
+      // Enhanced stats counter animation
+      function animateValue(id, start, end, duration) {
+        const obj = document.getElementById(id);
+        let startTimestamp = null;
+        const step = (timestamp) => {
+          if (!startTimestamp) startTimestamp = timestamp;
+          const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+          const value = Math.floor(progress * (end - start) + start);
+          obj.innerHTML = value.toLocaleString();
+          if (progress < 1) {
+            window.requestAnimationFrame(step);
+          }
+        };
+        window.requestAnimationFrame(step);
+      }
+
+      // Initialize animations
+      setTimeout(() => {
+        animateValue('clientsCount', 0, 5244, 2000);
+        animateValue('threatsCount', 0, 28761, 2000);
+        animateValue('uptimeCount', 0, 99.9, 2000);
+        animateValue('responseCount', 0, 24, 2000);
+      }, 500);
+
+      // Scroll animations
+      const fadeElements = document.querySelectorAll('.fade-in');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.1 });
+
+      fadeElements.forEach(el => observer.observe(el));
+
+      // Add click events to subsections
+      document.querySelectorAll('.subsection').forEach(item => {
+        item.addEventListener('click', function() {
+          const detail = this.getAttribute('data-detail');
+          showDetailPage(detail);
+        });
+      });
+
+      // Newsletter form submission
+      document.getElementById('newsletterForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert('Thank you for subscribing to our security intelligence!');
+        this.reset();
+      });
+    });
+
+    // Show payment modal
+    function showPaymentModal(planName, planPrice) {
+      document.getElementById('selectedPlan').textContent = planName;
+      document.getElementById('planName').textContent = planName;
+      document.getElementById('planPrice').textContent = planPrice;
+      document.getElementById('paymentModal').style.display = 'flex';
+    }
+
+    // Close modal
+    function closeModal() {
+      document.getElementById('paymentModal').style.display = 'none';
+    }
+
+    // Show detail page
+    function showDetailPage(detailId) {
+      // Hide main content
+      document.getElementById('main-content').style.display = 'none';
+      
+      // Create and show detail page
+      const detailPages = document.getElementById('detail-pages');
+      detailPages.innerHTML = `
+        <div class="detail-page" id="${detailId}-page">
+          <div class="container">
+            <a href="javascript:void(0)" class="back-button" onclick="goBack()">
+              <i class="fas fa-arrow-left"></i> Back to Security Dashboard
+            </a>
+            <h2>${detailId.replace(/-/g, ' ').toUpperCase()}</h2>
+            <div class="detail-content">
+              <p>Advanced security feature details for ${detailId.replace(/-/g, ' ')}.</p>
+              <p>This enterprise-grade security solution provides comprehensive protection with real-time monitoring and AI-powered threat detection.</p>
+              <p>Features include behavioral analysis, anomaly detection, and automated response protocols.</p>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      document.getElementById(`${detailId}-page`).style.display = 'block';
+    }
+
+    // Go back to main content
+    function goBack() {
+      document.getElementById('main-content').style.display = 'block';
+      document.getElementById('detail-pages').innerHTML = '';
+    }
+
+    // Close modal if clicked outside
+    window.onclick = function(event) {
+      const modal = document.getElementById('paymentModal');
+      if (event.target == modal) {
+        closeModal();
+      }
+    }
+
+    // Form submission
+    document.getElementById('paymentForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Security suite activated successfully! Redirecting to your dashboard...');
+      window.location.href = '/auth';
+    });
+  </script>
+</body>
+</html>

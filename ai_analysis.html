@@ -1,0 +1,2247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Operations Center | ANGELSUCCESS Cybersecurity</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3.0.4/build/global/luxon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.3.1/dist/chartjs-adapter-luxon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #3b82f6;
+            --secondary: #1e40af;
+            --danger: #dc2626;
+            --warning: #d97706;
+            --success: #059669;
+            --info: #0891b2;
+            --cyber-blue: #00d9ff;
+            --cyber-green: #00ff88;
+            --cyber-purple: #8b5cf6;
+            --cyber-pink: #ec4899;
+            --dark: #0f172a;
+            --dark-light: #1e293b;
+            --darker: #020617;
+            --text-light: #f1f5f9;
+            --text-muted: #94a3b8;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --card-border: rgba(100, 116, 139, 0.3);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --glow: 0 0 20px rgba(59, 130, 246, 0.3);
+            --cyber-glow: 0 0 15px rgba(0, 217, 255, 0.5);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--darker), #111827);
+            color: var(--text-light);
+            min-height: 100vh;
+            line-height: 1.6;
+            overflow-x: hidden;
+            font-weight: 400;
+        }
+
+        /* Advanced Animated Background */
+        .cyber-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            opacity: 0.15;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(16, 185, 129, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(139, 92, 246, 0.2) 0%, transparent 50%);
+            animation: pulseBackground 20s ease-in-out infinite;
+        }
+
+        @keyframes pulseBackground {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 0.2; }
+        }
+
+        .grid-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+            opacity: 0.3;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .floating-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(0, 217, 255, 0.3);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+        
+        .navbar {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px) saturate(180%);
+            padding: 1rem 2rem;
+            border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+        
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .logo i {
+            font-size: 1.8rem;
+            color: var(--cyber-blue);
+            text-shadow: var(--cyber-glow);
+            animation: logoPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes logoPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .logo span {
+            background: linear-gradient(135deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            position: relative;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+        
+        .nav-links a:hover {
+            color: var(--cyber-blue);
+            background: rgba(96, 165, 250, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .nav-links a.active {
+            color: var(--cyber-blue);
+            background: rgba(96, 165, 250, 0.15);
+            box-shadow: var(--glow);
+        }
+        
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 1rem;
+            right: 1rem;
+            height: 2px;
+            background: var(--cyber-blue);
+            border-radius: 1px;
+            box-shadow: 0 0 8px var(--cyber-blue);
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--cyber-blue), var(--cyber-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .user-avatar:hover {
+            transform: scale(1.05);
+            box-shadow: var(--cyber-glow);
+        }
+        
+        .main-container {
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .page-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 2.25rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .page-title i {
+            font-size: 2.5rem;
+            color: var(--cyber-blue);
+            text-shadow: var(--cyber-glow);
+        }
+        
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--success);
+            background: rgba(5, 150, 105, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            border: 1px solid rgba(5, 150, 105, 0.3);
+            box-shadow: 0 0 10px rgba(5, 150, 105, 0.2);
+            animation: statusPulse 2s infinite;
+        }
+
+        @keyframes statusPulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(5, 150, 105, 0.2); }
+            50% { box-shadow: 0 0 15px rgba(5, 150, 105, 0.4); }
+        }
+        
+        .page-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .ai-overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+        
+        .overview-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 1.75rem;
+            text-align: center;
+            transition: var(--transition);
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        
+        .overview-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+            border-color: rgba(59, 130, 246, 0.4);
+        }
+        
+        .overview-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--primary);
+        }
+        
+        .overview-card.success::before {
+            background: var(--success);
+        }
+        
+        .overview-card.warning::before {
+            background: var(--warning);
+        }
+        
+        .overview-card.danger::before {
+            background: var(--danger);
+        }
+        
+        .overview-card.info::before {
+            background: var(--info);
+        }
+        
+        .overview-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+            color: var(--cyber-blue);
+        }
+        
+        .overview-value {
+            font-size: 2.75rem;
+            font-weight: 800;
+            margin: 0.5rem 0;
+            background: linear-gradient(135deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+        }
+        
+        .overview-label {
+            font-size: 1rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        
+        .overview-trend {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.25rem;
+            font-size: 0.85rem;
+            margin-top: 0.75rem;
+            padding: 0.4rem 0.75rem;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            font-weight: 500;
+        }
+        
+        .trend-up {
+            color: var(--success);
+        }
+        
+        .trend-down {
+            color: var(--danger);
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+        }
+        
+        .ai-models-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+        
+        .model-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 1.75rem;
+            backdrop-filter: blur(20px);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        
+        .model-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(59, 130, 246, 0.4);
+        }
+        
+        .model-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+        }
+        
+        .model-card.supervised::before {
+            background: var(--primary);
+        }
+        
+        .model-card.unsupervised::before {
+            background: var(--warning);
+        }
+        
+        .model-card.ensemble::before {
+            background: var(--success);
+        }
+        
+        .model-card.deep-learning::before {
+            background: var(--info);
+        }
+        
+        .model-card.reinforcement::before {
+            background: var(--cyber-purple);
+        }
+        
+        .model-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .model-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.35rem;
+            font-weight: 700;
+        }
+        
+        .model-icon {
+            font-size: 1.75rem;
+            opacity: 0.9;
+            color: var(--cyber-blue);
+        }
+        
+        .model-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            background: rgba(5, 150, 105, 0.2);
+            color: var(--success);
+            border: 1px solid rgba(5, 150, 105, 0.3);
+            font-weight: 500;
+        }
+        
+        .model-status.warning {
+            background: rgba(217, 119, 6, 0.2);
+            color: var(--warning);
+            border: 1px solid rgba(217, 119, 6, 0.3);
+        }
+        
+        .model-status.danger {
+            background: rgba(220, 38, 38, 0.2);
+            color: var(--danger);
+            border: 1px solid rgba(220, 38, 38, 0.3);
+        }
+        
+        .model-status.training {
+            background: rgba(59, 130, 246, 0.2);
+            color: var(--primary);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+        
+        .model-status.optimizing {
+            background: rgba(139, 92, 246, 0.2);
+            color: var(--cyber-purple);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+        
+        .stat-value {
+            font-size: 3rem;
+            font-weight: 800;
+            margin: 0.5rem 0;
+            background: linear-gradient(135deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+        }
+        
+        .model-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .metric-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            transition: var(--transition);
+        }
+        
+        .metric-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+        }
+        
+        .metric-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        
+        .metric-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+        
+        .training-progress {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 1.75rem;
+            margin-bottom: 2.5rem;
+            transition: var(--transition);
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow);
+        }
+        
+        .training-progress:hover {
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(59, 130, 246, 0.2);
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .progress-bar-container {
+            width: 100%;
+            height: 20px;
+            background: #334155;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 1.5rem 0;
+            position: relative;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--success));
+            transition: width 0.5s ease;
+            position: relative;
+            border-radius: 10px;
+        }
+        
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background-image: linear-gradient(
+                -45deg,
+                rgba(255, 255, 255, 0.2) 25%,
+                transparent 25%,
+                transparent 50%,
+                rgba(255, 255, 255, 0.2) 50%,
+                rgba(255, 255, 255, 0.2) 75%,
+                transparent 75%,
+                transparent
+            );
+            background-size: 20px 20px;
+            animation: move 1s linear infinite;
+        }
+        
+        @keyframes move {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 20px 0;
+            }
+        }
+        
+        .progress-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .progress-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+        
+        .progress-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        
+        .progress-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .chart-container {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 1.75rem;
+            margin-bottom: 2.5rem;
+            height: 450px;
+            transition: var(--transition);
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow);
+        }
+        
+        .chart-container:hover {
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(59, 130, 246, 0.2);
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .chart-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .chart-title i {
+            color: var(--cyber-blue);
+        }
+        
+        .chart-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+            font-size: 0.95rem;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background: rgba(37, 99, 235, 0.1);
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #10b981);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: linear-gradient(135deg, #10b981, var(--success));
+            box-shadow: 0 10px 20px rgba(5, 150, 105, 0.3);
+        }
+        
+        .btn-warning {
+            background: linear-gradient(135deg, var(--warning), #f59e0b);
+            color: white;
+        }
+        
+        .btn-warning:hover {
+            background: linear-gradient(135deg, #f59e0b, var(--warning));
+            box-shadow: 0 10px 20px rgba(217, 119, 6, 0.3);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #ef4444);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #ef4444, var(--danger));
+            box-shadow: 0 10px 20px rgba(220, 38, 38, 0.3);
+        }
+        
+        .icon-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0.75rem;
+            border-radius: 10px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .icon-btn:hover {
+            color: var(--text-light);
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .refresh-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+        
+        .pulse {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 0 rgba(5, 150, 105, 0.4);
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(5, 150, 105, 0.7);
+            }
+            
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(5, 150, 105, 0);
+            }
+            
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(5, 150, 105, 0);
+            }
+        }
+        
+        .mlops-pipeline {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 1.75rem;
+            margin-bottom: 2.5rem;
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow);
+        }
+        
+        .pipeline-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .pipeline-step {
+            text-align: center;
+            padding: 1.5rem 1rem;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            transition: var(--transition);
+            position: relative;
+            border: 1px solid transparent;
+        }
+        
+        .pipeline-step:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-5px);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+        
+        .pipeline-step.active {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+        }
+        
+        .pipeline-step.completed {
+            background: rgba(5, 150, 105, 0.1);
+            border: 1px solid rgba(5, 150, 105, 0.3);
+        }
+        
+        .step-icon {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+            color: var(--cyber-blue);
+        }
+        
+        .step-label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .step-status {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        
+        .system-health {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 1.75rem;
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow);
+        }
+        
+        .health-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .health-metric {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            transition: var(--transition);
+        }
+        
+        .health-metric:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-3px);
+        }
+        
+        .health-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
+        }
+        
+        .health-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        
+        /* Notification styles */
+        .ai-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1.25rem 1.5rem;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            z-index: 1000;
+            box-shadow: var(--shadow-xl);
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            max-width: 400px;
+        }
+
+        .ai-notification.success {
+            background: linear-gradient(135deg, var(--success), #10b981);
+            border-left: 4px solid rgba(5, 150, 105, 0.8);
+        }
+
+        .ai-notification.error {
+            background: linear-gradient(135deg, var(--danger), #ef4444);
+            border-left: 4px solid rgba(220, 38, 38, 0.8);
+        }
+
+        .ai-notification.warning {
+            background: linear-gradient(135deg, var(--warning), #f59e0b);
+            border-left: 4px solid rgba(217, 119, 6, 0.8);
+        }
+
+        .ai-notification.info {
+            background: linear-gradient(135deg, var(--info), #0ea5e9);
+            border-left: 4px solid rgba(8, 145, 178, 0.8);
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            flex-direction: column;
+            gap: 1.5rem;
+            color: var(--text-light);
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(59, 130, 246, 0.3);
+            border-top: 4px solid var(--cyber-blue);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background: rgba(220, 38, 38, 0.2);
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            color: var(--text-light);
+            padding: 1.25rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            display: none;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: var(--shadow);
+        }
+
+        /* Advanced tooltip */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: rgba(15, 23, 42, 0.95);
+            color: var(--text-light);
+            text-align: center;
+            border-radius: 6px;
+            padding: 0.75rem;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.85rem;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1400px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .ai-models-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        @media (max-width: 1024px) {
+            .ai-models-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .pipeline-steps {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .nav-links {
+                gap: 1rem;
+            }
+            
+            .nav-links a {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+            
+            .nav-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                gap: 0.75rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .main-container {
+                padding: 1rem;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .page-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .model-metrics {
+                grid-template-columns: 1fr;
+            }
+            
+            .pipeline-steps {
+                grid-template-columns: 1fr;
+            }
+            
+            .progress-info {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .health-metrics {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .ai-overview-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .progress-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .health-metrics {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Advanced Animated Background -->
+    <div class="cyber-bg"></div>
+    <div class="grid-pattern"></div>
+    <div class="floating-particles" id="particlesContainer"></div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <div>Initializing AI Operations Center...</div>
+        <div style="font-size: 0.9rem; color: var(--text-muted);">Loading advanced threat detection models</div>
+    </div>
+
+    <!-- Error Message -->
+    <div class="error-message" id="errorMessage">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span id="errorText">Connection error. Please check your network connection.</span>
+        <button class="btn btn-outline" onclick="hideError()" style="margin-left: auto;">Dismiss</button>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>ANGELSUCCESS SOC</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="/network-monitor"><i class="fas fa-network-wired"></i> Network Monitor</a></li>
+                <li><a href="/ai-analysis" class="active"><i class="fas fa-robot"></i> AI Analysis</a></li>
+                <li><a href="/threat-intelligence"><i class="fas fa-bug"></i> Threat Intel</a></li>
+                <li><a href="/optimization-center"><i class="fas fa-cogs"></i> Optimization</a></li>
+                <li><a href="/system-settings"><i class="fas fa-sliders-h"></i> Settings</a></li>
+            </ul>
+            <div class="user-menu">
+                <div class="user-avatar tooltip">
+                    <span>AS</span>
+                    <span class="tooltiptext">Admin User<br>Security Level: MAXIMUM</span>
+                </div>
+                <button class="btn btn-outline" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="page-header">
+            <h1 class="page-title">
+                <i class="fas fa-robot"></i>
+                AI Operations Center
+                <span class="status-indicator">
+                    <i class="fas fa-circle"></i>
+                    MLOps ACTIVE
+                </span>
+            </h1>
+            <div class="page-actions">
+                <button class="btn btn-outline" onclick="exportAIData()">
+                    <i class="fas fa-download"></i> Export Data
+                </button>
+                <button class="btn btn-primary" onclick="refreshAIData()">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+                <button class="btn btn-success" onclick="startAITraining()">
+                    <i class="fas fa-play"></i> Start Training
+                </button>
+            </div>
+        </div>
+        
+        <div class="ai-overview-grid">
+            <div class="overview-card">
+                <div class="overview-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <div class="overview-value" id="totalModels">6</div>
+                <div class="overview-label">Active Models</div>
+                <div class="overview-trend trend-up">
+                    <i class="fas fa-arrow-up"></i> +2 this week
+                </div>
+            </div>
+            <div class="overview-card success">
+                <div class="overview-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="overview-value" id="avgAccuracy">0%</div>
+                <div class="overview-label">Average Accuracy</div>
+                <div class="overview-trend trend-up">
+                    <i class="fas fa-arrow-up"></i> 3.2% improvement
+                </div>
+            </div>
+            <div class="overview-card warning">
+                <div class="overview-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="overview-value" id="trainingTime">0h</div>
+                <div class="overview-label">Training Time</div>
+                <div class="overview-trend trend-down">
+                    <i class="fas fa-arrow-down"></i> 22% faster
+                </div>
+            </div>
+            <div class="overview-card info">
+                <div class="overview-icon">
+                    <i class="fas fa-database"></i>
+                </div>
+                <div class="overview-value" id="dataProcessed">0GB</div>
+                <div class="overview-label">Data Processed</div>
+                <div class="overview-trend trend-up">
+                    <i class="fas fa-arrow-up"></i> 18.7GB today
+                </div>
+            </div>
+        </div>
+        
+        <div class="dashboard-grid">
+            <div>
+                <div class="ai-models-grid">
+                    <div class="model-card supervised">
+                        <div class="model-header">
+                            <h3 class="model-title">
+                                <i class="fas fa-graduation-cap model-icon"></i>
+                                Supervised Learning
+                            </h3>
+                            <div class="model-status">
+                                <i class="fas fa-circle"></i>
+                                Active
+                            </div>
+                        </div>
+                        <div class="stat-value" id="supervisedAccuracy">0%</div>
+                        <div class="model-metrics">
+                            <div class="metric-item">
+                                <span class="metric-label">Accuracy</span>
+                                <span class="metric-value" id="supervisedAcc">0%</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Precision</span>
+                                <span class="metric-value" id="supervisedPrecision">0%</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Recall</span>
+                                <span class="metric-value" id="supervisedRecall">0%</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">F1-Score</span>
+                                <span class="metric-value" id="supervisedF1">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="model-card unsupervised">
+                        <div class="model-header">
+                            <h3 class="model-title">
+                                <i class="fas fa-project-diagram model-icon"></i>
+                                Unsupervised Learning
+                            </h3>
+                            <div class="model-status training">
+                                <i class="fas fa-circle"></i>
+                                Training
+                            </div>
+                        </div>
+                        <div class="stat-value" id="unsupervisedAccuracy">0%</div>
+                        <div class="model-metrics">
+                            <div class="metric-item">
+                                <span class="metric-label">Anomaly Detection</span>
+                                <span class="metric-value" id="unsupervisedAnomaly">0%</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Clustering Accuracy</span>
+                                <span class="metric-value" id="unsupervisedClustering">0%</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Silhouette Score</span>
+                                <span class="metric-value" id="unsupervisedSilhouette">0.0</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Data Coverage</span>
+                                <span class="metric-value" id="unsupervisedCoverage">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="model-card ensemble">
+                        <div class="model-header">
+                            <h3 class="model-title">
+                                <i class="fas fa-layer-group model-icon"></i>
+                                Ensemble Model
+                            </h3>
+                            <div class="model-status">
+                                <i class="fas fa-circle"></i>
+                                Active
+                            </div>
+                        </div>
+                        <div class="stat-value" id="ensembleAccuracy">0%</div>
+                        <div class="model-metrics">
+                            <div class="metric-item">
+                                <span class="metric-label">Voting Confidence</span>
+                                <span class="metric-value" id="ensembleConfidence">0%</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Overall Performance</span>
+                                <span class="metric-value" id="ensemblePerformance">0%</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Model Agreement</span>
+                                <span class="metric-value" id="ensembleAgreement">0%</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Error Reduction</span>
+                                <span class="metric-value" id="ensembleErrorReduction">0%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="model-card deep-learning">
+                        <div class="model-header">
+                            <h3 class="model-title">
+                                <i class="fas fa-network-wired model-icon"></i>
+                                Deep Learning
+                            </h3>
+                            <div class="model-status optimizing">
+                                <i class="fas fa-circle"></i>
+                                Optimizing
+                            </div>
+                        </div>
+                        <div class="stat-value" id="deepLearningAccuracy">0%</div>
+                        <div class="model-metrics">
+                            <div class="metric-item">
+                                <span class="metric-label">Neural Network</span>
+                                <span class="metric-value" id="deepLearningNN">LSTM</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Learning Rate</span>
+                                <span class="metric-value" id="deepLearningLR">0.001</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Batch Size</span>
+                                <span class="metric-value" id="deepLearningBatch">64</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Epochs</span>
+                                <span class="metric-value" id="deepLearningEpochs">100</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="training-progress">
+                    <div class="progress-header">
+                        <h3><i class="fas fa-cogs"></i> AI Training Progress</h3>
+                        <div>
+                            <span class="model-status training">
+                                <i class="fas fa-circle"></i>
+                                Active Training
+                            </span>
+                        </div>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-fill" id="trainingProgress" style="width: 0%"></div>
+                    </div>
+                    <div class="progress-info">
+                        <div class="progress-item">
+                            <span class="progress-label">Training Cycle</span>
+                            <span class="progress-value" id="trainingCycle">0</span>
+                        </div>
+                        <div class="progress-item">
+                            <span class="progress-label">Training Samples</span>
+                            <span class="progress-value" id="trainingSamples">0</span>
+                        </div>
+                        <div class="progress-item">
+                            <span class="progress-label">Epoch</span>
+                            <span class="progress-value" id="trainingEpoch">0/100</span>
+                        </div>
+                        <div class="progress-item">
+                            <span class="progress-label">Loss</span>
+                            <span class="progress-value" id="trainingLoss">0.000</span>
+                        </div>
+                        <div class="progress-item">
+                            <span class="progress-label">Learning Rate</span>
+                            <span class="progress-value" id="trainingLR">0.001</span>
+                        </div>
+                        <div class="progress-item">
+                            <span class="progress-label">Batch Size</span>
+                            <span class="progress-value" id="trainingBatch">64</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="system-health">
+                <div class="progress-header">
+                    <h3><i class="fas fa-heartbeat"></i> System Health</h3>
+                    <div class="model-status">
+                        <i class="fas fa-circle"></i>
+                        Optimal
+                    </div>
+                </div>
+                <div class="health-metrics">
+                    <div class="health-metric">
+                        <i class="fas fa-microchip" style="color: var(--cyber-blue); font-size: 1.5rem;"></i>
+                        <div class="health-value" id="cpuUsage">0%</div>
+                        <div class="health-label">CPU Usage</div>
+                    </div>
+                    <div class="health-metric">
+                        <i class="fas fa-memory" style="color: var(--cyber-green); font-size: 1.5rem;"></i>
+                        <div class="health-value" id="memoryUsage">0%</div>
+                        <div class="health-label">Memory Usage</div>
+                    </div>
+                    <div class="health-metric">
+                        <i class="fas fa-hdd" style="color: var(--cyber-purple); font-size: 1.5rem;"></i>
+                        <div class="health-value" id="diskUsage">0%</div>
+                        <div class="health-label">Disk Usage</div>
+                    </div>
+                    <div class="health-metric">
+                        <i class="fas fa-network-wired" style="color: var(--info); font-size: 1.5rem;"></i>
+                        <div class="health-value" id="networkUsage">0%</div>
+                        <div class="health-label">Network I/O</div>
+                    </div>
+                </div>
+                
+                <div class="mlops-pipeline" style="margin-top: 2rem;">
+                    <div class="progress-header">
+                        <h3><i class="fas fa-project-diagram"></i> MLOps Pipeline</h3>
+                        <div>
+                            <button class="btn btn-outline" onclick="pauseAITraining()">
+                                <i class="fas fa-pause"></i> Pause
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pipeline-steps">
+                        <div class="pipeline-step active">
+                            <div class="step-icon">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <div class="step-label">Data Collection</div>
+                            <div class="step-status">Processing</div>
+                        </div>
+                        <div class="pipeline-step">
+                            <div class="step-icon">
+                                <i class="fas fa-broom"></i>
+                            </div>
+                            <div class="step-label">Data Preprocessing</div>
+                            <div class="step-status">Ready</div>
+                        </div>
+                        <div class="pipeline-step">
+                            <div class="step-icon">
+                                <i class="fas fa-cogs"></i>
+                            </div>
+                            <div class="step-label">Feature Engineering</div>
+                            <div class="step-status">Pending</div>
+                        </div>
+                        <div class="pipeline-step">
+                            <div class="step-icon">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <div class="step-label">Model Training</div>
+                            <div class="step-status">Pending</div>
+                        </div>
+                        <div class="pipeline-step">
+                            <div class="step-icon">
+                                <i class="fas fa-chart-bar"></i>
+                            </div>
+                            <div class="step-label">Model Evaluation</div>
+                            <div class="step-status">Pending</div>
+                        </div>
+                        <div class="pipeline-step">
+                            <div class="step-icon">
+                                <i class="fas fa-rocket"></i>
+                            </div>
+                            <div class="step-label">Deployment</div>
+                            <div class="step-status">Pending</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <div class="chart-header">
+                <h3 class="chart-title">
+                    <i class="fas fa-chart-radar"></i>
+                    Model Performance Comparison
+                </h3>
+                <div class="chart-actions">
+                    <button class="icon-btn" title="Toggle chart type" onclick="toggleChartType()">
+                        <i class="fas fa-exchange-alt"></i>
+                    </button>
+                    <button class="icon-btn" title="Download chart" onclick="downloadChart()">
+                        <i class="fas fa-download"></i>
+                    </button>
+                    <button class="icon-btn" title="Fullscreen" onclick="toggleFullscreen()">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                </div>
+            </div>
+            <canvas id="modelComparisonChart"></canvas>
+        </div>
+        
+        <div class="refresh-indicator">
+            <span class="pulse"></span>
+            <span>AI data updating every 3 seconds</span>
+            <span style="margin-left: auto; font-size: 0.8rem;">Last updated: <span id="lastUpdated">Just now</span></span>
+        </div>
+    </div>
+
+    <script>
+        class ProfessionalAIAnalysis {
+            constructor() {
+                this.charts = {};
+                this.isTraining = false;
+                this.trainingProgress = 0;
+                this.currentPipelineStep = 0;
+                this.apiBaseUrl = window.location.origin;
+                this.isAuthenticated = false;
+                this.dataUpdateInterval = null;
+                this.lastUpdateTime = new Date();
+                this.fullscreenMode = false;
+            }
+
+            async initialize() {
+                this.createParticles();
+                await this.checkAuthentication();
+                this.initializeCharts();
+                this.setupEventListeners();
+                this.startRealTimeUpdates();
+                this.animatePipeline();
+                this.updateLastUpdated();
+            }
+
+            createParticles() {
+                const container = document.getElementById('particlesContainer');
+                const particleCount = 30;
+                
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    
+                    // Random properties
+                    const size = Math.random() * 6 + 2;
+                    const left = Math.random() * 100;
+                    const animationDuration = Math.random() * 20 + 10;
+                    const animationDelay = Math.random() * 5;
+                    const opacity = Math.random() * 0.5 + 0.1;
+                    
+                    particle.style.width = `${size}px`;
+                    particle.style.height = `${size}px`;
+                    particle.style.left = `${left}%`;
+                    particle.style.animationDuration = `${animationDuration}s`;
+                    particle.style.animationDelay = `${animationDelay}s`;
+                    particle.style.opacity = opacity;
+                    
+                    // Random color
+                    const colors = [
+                        'rgba(0, 217, 255, 0.5)',
+                        'rgba(0, 255, 136, 0.4)',
+                        'rgba(139, 92, 246, 0.4)',
+                        'rgba(236, 72, 153, 0.3)'
+                    ];
+                    particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    container.appendChild(particle);
+                }
+            }
+
+            async checkAuthentication() {
+                try {
+                    // Check if we have a valid session
+                    const response = await fetch(`${this.apiBaseUrl}/api/system-status`, {
+                        credentials: 'include'
+                    });
+                    
+                    if (response.ok) {
+                        this.isAuthenticated = true;
+                        this.hideLoading();
+                    } else {
+                        this.showError('Authentication required. Redirecting to login...');
+                        setTimeout(() => {
+                            window.location.href = '/auth';
+                        }, 2000);
+                    }
+                } catch (error) {
+                    this.showError('Connection failed. Please check if the backend server is running.');
+                    console.error('Authentication check failed:', error);
+                    // For demo purposes, continue with mock data
+                    this.isAuthenticated = true;
+                    this.hideLoading();
+                }
+            }
+
+            initializeCharts() {
+                const ctx = document.getElementById('modelComparisonChart').getContext('2d');
+                this.charts.modelComparison = new Chart(ctx, {
+                    type: 'radar',
+                    data: {
+                        labels: ['Accuracy', 'Precision', 'Recall', 'Speed', 'Reliability', 'Scalability', 'Robustness'],
+                        datasets: [
+                            {
+                                label: 'Supervised',
+                                data: [0, 0, 0, 0, 0, 0, 0],
+                                borderColor: '#2563eb',
+                                backgroundColor: 'rgba(37, 99, 235, 0.2)',
+                                borderWidth: 3,
+                                pointBackgroundColor: '#2563eb',
+                                pointBorderColor: '#fff',
+                                pointHoverBackgroundColor: '#fff',
+                                pointHoverBorderColor: '#2563eb',
+                                pointRadius: 4
+                            },
+                            {
+                                label: 'Unsupervised',
+                                data: [0, 0, 0, 0, 0, 0, 0],
+                                borderColor: '#d97706',
+                                backgroundColor: 'rgba(217, 119, 6, 0.2)',
+                                borderWidth: 3,
+                                pointBackgroundColor: '#d97706',
+                                pointBorderColor: '#fff',
+                                pointHoverBackgroundColor: '#fff',
+                                pointHoverBorderColor: '#d97706',
+                                pointRadius: 4
+                            },
+                            {
+                                label: 'Ensemble',
+                                data: [0, 0, 0, 0, 0, 0, 0],
+                                borderColor: '#059669',
+                                backgroundColor: 'rgba(5, 150, 105, 0.2)',
+                                borderWidth: 3,
+                                pointBackgroundColor: '#059669',
+                                pointBorderColor: '#fff',
+                                pointHoverBackgroundColor: '#fff',
+                                pointHoverBorderColor: '#059669',
+                                pointRadius: 4
+                            },
+                            {
+                                label: 'Deep Learning',
+                                data: [0, 0, 0, 0, 0, 0, 0],
+                                borderColor: '#0891b2',
+                                backgroundColor: 'rgba(8, 145, 178, 0.2)',
+                                borderWidth: 3,
+                                pointBackgroundColor: '#0891b2',
+                                pointBorderColor: '#fff',
+                                pointHoverBackgroundColor: '#fff',
+                                pointHoverBorderColor: '#0891b2',
+                                pointRadius: 4
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            r: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: {
+                                    color: '#9ca3af',
+                                    backdropColor: 'transparent',
+                                    stepSize: 20
+                                },
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                },
+                                angleLines: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                },
+                                pointLabels: {
+                                    color: '#e5e7eb',
+                                    font: {
+                                        size: 11,
+                                        weight: '500'
+                                    }
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                                labels: {
+                                    color: '#e5e7eb',
+                                    usePointStyle: true,
+                                    padding: 15,
+                                    font: {
+                                        size: 11
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(30, 41, 59, 0.95)',
+                                titleColor: '#e5e7eb',
+                                bodyColor: '#e5e7eb',
+                                borderColor: 'rgba(59, 130, 246, 0.3)',
+                                borderWidth: 1,
+                                padding: 12,
+                                boxPadding: 6
+                            }
+                        }
+                    }
+                });
+            }
+
+            setupEventListeners() {
+                // Keyboard shortcuts
+                document.addEventListener('keydown', (e) => {
+                    if (e.ctrlKey || e.metaKey) {
+                        switch(e.key) {
+                            case 'r':
+                                e.preventDefault();
+                                this.refreshAIData();
+                                break;
+                            case 't':
+                                e.preventDefault();
+                                this.startAITraining();
+                                break;
+                            case 'p':
+                                e.preventDefault();
+                                this.pauseAITraining();
+                                break;
+                            case 'f':
+                                e.preventDefault();
+                                this.toggleFullscreen();
+                                break;
+                        }
+                    }
+                });
+
+                // Error handling for offline detection
+                window.addEventListener('online', () => {
+                    this.hideError();
+                    this.refreshAIData();
+                });
+
+                window.addEventListener('offline', () => {
+                    this.showError('Network connection lost. Attempting to reconnect...');
+                });
+
+                // Performance monitoring
+                this.startPerformanceMonitoring();
+            }
+
+            startPerformanceMonitoring() {
+                setInterval(() => {
+                    // Simulate system metrics
+                    document.getElementById('cpuUsage').textContent = `${Math.floor(Math.random() * 30) + 10}%`;
+                    document.getElementById('memoryUsage').textContent = `${Math.floor(Math.random() * 40) + 20}%`;
+                    document.getElementById('diskUsage').textContent = `${Math.floor(Math.random() * 20) + 5}%`;
+                    document.getElementById('networkUsage').textContent = `${Math.floor(Math.random() * 60) + 10}%`;
+                }, 5000);
+            }
+
+            startRealTimeUpdates() {
+                this.fetchAIData();
+                this.dataUpdateInterval = setInterval(() => {
+                    this.fetchAIData();
+                }, 3000);
+            }
+
+            async fetchAIData() {
+                if (!this.isAuthenticated) return;
+
+                try {
+                    const response = await fetch(`${this.apiBaseUrl}/api/realtime-data`, {
+                        credentials: 'include',
+                        headers: {
+                            'Cache-Control': 'no-cache',
+                            'Pragma': 'no-cache'
+                        }
+                    });
+                    
+                    if (!response.ok) {
+                        if (response.status === 401) {
+                            this.showError('Session expired. Redirecting to login...');
+                            setTimeout(() => window.location.href = '/auth', 2000);
+                            return;
+                        }
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    
+                    const data = await response.json();
+                    this.hideError();
+                    this.updateAIAnalysis(data);
+                    this.lastUpdateTime = new Date();
+                    this.updateLastUpdated();
+                } catch (error) {
+                    console.error('Error fetching AI data:', error);
+                    this.showError('Failed to fetch AI data. Retrying...');
+                    // Fallback to mock data for demo
+                    this.updateAIAnalysis(this.generateMockData());
+                    this.lastUpdateTime = new Date();
+                    this.updateLastUpdated();
+                }
+            }
+
+            updateAIAnalysis(data) {
+                if (!data) return;
+
+                // Update overview stats with animation
+                if (data.ai_models) {
+                    const avgAccuracy = ((data.ai_models.supervised_accuracy + data.ai_models.unsupervised_accuracy + data.ai_models.ensemble_accuracy) / 3 * 100).toFixed(1);
+                    this.animateValue('avgAccuracy', avgAccuracy + '%');
+                    
+                    // Update model accuracies
+                    this.animateValue('supervisedAccuracy', (data.ai_models.supervised_accuracy * 100).toFixed(1) + '%');
+                    this.animateValue('unsupervisedAccuracy', (data.ai_models.unsupervised_accuracy * 100).toFixed(1) + '%');
+                    this.animateValue('ensembleAccuracy', (data.ai_models.ensemble_accuracy * 100).toFixed(1) + '%');
+                    this.animateValue('deepLearningAccuracy', (data.ai_models.ensemble_accuracy * 98).toFixed(1) + '%'); // Mock for deep learning
+
+                    // Update detailed metrics
+                    this.updateModelMetrics(data);
+                }
+
+                // Update training data
+                this.updateTrainingProgress(data);
+
+                // Update comparison chart
+                this.updateComparisonChart(data);
+
+                // Update pipeline animation
+                this.updatePipeline(data);
+
+                // Update system metrics
+                if (data.ai_confidence) {
+                    this.animateValue('aiConfidence', data.ai_confidence.toFixed(1) + '%');
+                }
+            }
+
+            animateValue(elementId, value) {
+                const element = document.getElementById(elementId);
+                if (element && element.textContent !== value) {
+                    element.style.transform = 'scale(1.1)';
+                    setTimeout(() => {
+                        element.textContent = value;
+                        element.style.transform = 'scale(1)';
+                    }, 150);
+                }
+            }
+
+            updateModelMetrics(data) {
+                if (!data.ai_models) return;
+
+                // Supervised metrics
+                document.getElementById('supervisedAcc').textContent = (data.ai_models.supervised_accuracy * 100).toFixed(1) + '%';
+                document.getElementById('supervisedPrecision').textContent = (data.ai_models.supervised_accuracy * 95).toFixed(1) + '%';
+                document.getElementById('supervisedRecall').textContent = (data.ai_models.supervised_accuracy * 92).toFixed(1) + '%';
+                document.getElementById('supervisedF1').textContent = (data.ai_models.supervised_accuracy * 93).toFixed(1) + '%';
+                
+                // Unsupervised metrics
+                document.getElementById('unsupervisedAnomaly').textContent = (data.ai_models.unsupervised_accuracy * 100).toFixed(1) + '%';
+                document.getElementById('unsupervisedClustering').textContent = (data.ai_models.unsupervised_accuracy * 88).toFixed(1) + '%';
+                document.getElementById('unsupervisedSilhouette').textContent = (data.ai_models.unsupervised_accuracy * 0.8).toFixed(2);
+                document.getElementById('unsupervisedCoverage').textContent = (data.ai_models.unsupervised_accuracy * 95).toFixed(1) + '%';
+                
+                // Ensemble metrics
+                document.getElementById('ensembleConfidence').textContent = (data.ai_models.ensemble_accuracy * 100).toFixed(1) + '%';
+                document.getElementById('ensemblePerformance').textContent = (data.ai_models.ensemble_accuracy * 98).toFixed(1) + '%';
+                document.getElementById('ensembleAgreement').textContent = (data.ai_models.ensemble_accuracy * 96).toFixed(1) + '%';
+                document.getElementById('ensembleErrorReduction').textContent = (data.ai_models.ensemble_accuracy * 45).toFixed(1) + '%';
+            }
+
+            updateTrainingProgress(data) {
+                if (data.ai_training_data && data.ai_training_data.length > 0) {
+                    const latestTraining = data.ai_training_data[data.ai_training_data.length - 1];
+                    
+                    // Update progress values
+                    document.getElementById('trainingCycle').textContent = latestTraining.training_cycle || 0;
+                    document.getElementById('trainingSamples').textContent = (latestTraining.training_samples || 0).toLocaleString();
+                    document.getElementById('trainingEpoch').textContent = `${(latestTraining.training_cycle || 0) % 100}/100`;
+                    document.getElementById('trainingLoss').textContent = (latestTraining.training_loss || 0.1).toFixed(4);
+                    document.getElementById('trainingLR').textContent = '0.001';
+                    document.getElementById('trainingBatch').textContent = '64';
+                    
+                    // Update progress bar
+                    const progress = ((latestTraining.training_cycle || 0) % 100);
+                    document.getElementById('trainingProgress').style.width = progress + '%';
+                    
+                    // Update training time
+                    const hours = Math.floor((latestTraining.training_cycle || 0) / 10);
+                    document.getElementById('trainingTime').textContent = `${hours}h`;
+                    
+                    // Update data processed
+                    const gbProcessed = ((latestTraining.training_samples || 0) * 0.000001).toFixed(1);
+                    document.getElementById('dataProcessed').textContent = `${gbProcessed}GB`;
+                }
+            }
+
+            updateComparisonChart(data) {
+                if (this.charts.modelComparison && data.ai_models) {
+                    this.charts.modelComparison.data.datasets[0].data = [
+                        data.ai_models.supervised_accuracy * 100,
+                        data.ai_models.supervised_accuracy * 95,
+                        data.ai_models.supervised_accuracy * 92,
+                        85,
+                        90,
+                        80,
+                        88
+                    ];
+                    this.charts.modelComparison.data.datasets[1].data = [
+                        data.ai_models.unsupervised_accuracy * 100,
+                        data.ai_models.unsupervised_accuracy * 88,
+                        data.ai_models.unsupervised_accuracy * 85,
+                        75,
+                        82,
+                        85,
+                        78
+                    ];
+                    this.charts.modelComparison.data.datasets[2].data = [
+                        data.ai_models.ensemble_accuracy * 100,
+                        data.ai_models.ensemble_accuracy * 97,
+                        data.ai_models.ensemble_accuracy * 96,
+                        92,
+                        95,
+                        88,
+                        94
+                    ];
+                    this.charts.modelComparison.data.datasets[3].data = [
+                        data.ai_models.ensemble_accuracy * 98,
+                        data.ai_models.ensemble_accuracy * 96,
+                        data.ai_models.ensemble_accuracy * 94,
+                        88,
+                        92,
+                        85,
+                        90
+                    ];
+                    this.charts.modelComparison.update('none');
+                }
+            }
+
+            animatePipeline() {
+                setInterval(() => {
+                    const steps = document.querySelectorAll('.pipeline-step');
+                    steps.forEach(step => {
+                        step.classList.remove('active', 'completed');
+                    });
+                    
+                    if (this.currentPipelineStep < steps.length) {
+                        steps[this.currentPipelineStep].classList.add('active');
+                        // Mark previous steps as completed
+                        for (let i = 0; i < this.currentPipelineStep; i++) {
+                            steps[i].classList.add('completed');
+                        }
+                        this.currentPipelineStep++;
+                    } else {
+                        this.currentPipelineStep = 0;
+                        steps[0].classList.add('active');
+                    }
+                }, 2000);
+            }
+
+            updatePipeline(data) {
+                // Update pipeline based on training progress
+                const progress = (data.ai_training_data?.[0]?.training_cycle || 0) % 100;
+                const steps = document.querySelectorAll('.pipeline-step');
+                
+                steps.forEach((step, index) => {
+                    step.classList.remove('active', 'completed');
+                    if (index <= Math.floor(progress / 16.67)) {
+                        step.classList.add('completed');
+                        if (index === Math.floor(progress / 16.67)) {
+                            step.classList.add('active');
+                        }
+                    }
+                });
+            }
+
+            toggleChartType() {
+                if (this.charts.modelComparison.config.type === 'radar') {
+                    this.charts.modelComparison.config.type = 'bar';
+                    this.showNotification('Switched to Bar Chart view', 'info');
+                } else {
+                    this.charts.modelComparison.config.type = 'radar';
+                    this.showNotification('Switched to Radar Chart view', 'info');
+                }
+                this.charts.modelComparison.update();
+            }
+
+            downloadChart() {
+                const link = document.createElement('a');
+                link.download = 'ai-model-comparison.png';
+                link.href = this.charts.modelComparison.toBase64Image();
+                link.click();
+                this.showNotification('Chart downloaded successfully', 'success');
+            }
+
+            toggleFullscreen() {
+                const chartContainer = document.querySelector('.chart-container');
+                
+                if (!this.fullscreenMode) {
+                    chartContainer.style.position = 'fixed';
+                    chartContainer.style.top = '0';
+                    chartContainer.style.left = '0';
+                    chartContainer.style.width = '100vw';
+                    chartContainer.style.height = '100vh';
+                    chartContainer.style.zIndex = '10000';
+                    chartContainer.style.borderRadius = '0';
+                    chartContainer.style.padding = '2rem';
+                    this.fullscreenMode = true;
+                    this.showNotification('Entered fullscreen mode', 'info');
+                } else {
+                    chartContainer.style.position = '';
+                    chartContainer.style.top = '';
+                    chartContainer.style.left = '';
+                    chartContainer.style.width = '';
+                    chartContainer.style.height = '450px';
+                    chartContainer.style.zIndex = '';
+                    chartContainer.style.borderRadius = '16px';
+                    chartContainer.style.padding = '1.75rem';
+                    this.fullscreenMode = false;
+                    this.showNotification('Exited fullscreen mode', 'info');
+                }
+                
+                this.charts.modelComparison.resize();
+            }
+
+            async startAITraining() {
+                try {
+                    const response = await fetch(`${this.apiBaseUrl}/api/start-ai-training`, { 
+                        method: 'POST',
+                        credentials: 'include',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}`);
+                    }
+                    
+                    const result = await response.json();
+                    if (result.success) {
+                        this.isTraining = true;
+                        document.querySelector('.model-status.training').innerHTML = '<i class="fas fa-circle"></i> Training';
+                        this.showNotification('AI Training Session Started!', 'success');
+                    }
+                } catch (error) {
+                    console.error('Error starting AI training:', error);
+                    this.showNotification('Failed to start training session', 'error');
+                }
+            }
+
+            pauseAITraining() {
+                this.isTraining = !this.isTraining;
+                if (this.isTraining) {
+                    this.showNotification('AI Training Resumed', 'success');
+                } else {
+                    this.showNotification('AI Training Paused', 'warning');
+                }
+            }
+
+            refreshAIData() {
+                this.fetchAIData();
+                // Show refresh feedback
+                const refreshBtn = document.querySelector('.btn .fa-sync-alt');
+                if (refreshBtn) {
+                    refreshBtn.classList.add('fa-spin');
+                    setTimeout(() => {
+                        refreshBtn.classList.remove('fa-spin');
+                    }, 1000);
+                }
+                this.showNotification('Data refreshed successfully', 'info');
+            }
+
+            updateLastUpdated() {
+                const now = new Date();
+                const lastUpdatedElement = document.getElementById('lastUpdated');
+                if (lastUpdatedElement) {
+                    lastUpdatedElement.textContent = now.toLocaleTimeString();
+                }
+            }
+
+            showNotification(message, type) {
+                const notification = document.createElement('div');
+                notification.className = `ai-notification ${type}`;
+                notification.innerHTML = `
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-triangle' : type === 'warning' ? 'exclamation-circle' : 'info-circle'}"></i>
+                    <span>${message}</span>
+                `;
+
+                document.body.appendChild(notification);
+
+                // Animate in
+                setTimeout(() => notification.style.transform = 'translateX(0)', 100);
+
+                // Auto remove
+                setTimeout(() => {
+                    notification.style.transform = 'translateX(100%)';
+                    setTimeout(() => notification.remove(), 300);
+                }, 5000);
+            }
+
+            showError(message) {
+                const errorElement = document.getElementById('errorMessage');
+                const errorText = document.getElementById('errorText');
+                if (errorElement && errorText) {
+                    errorText.textContent = message;
+                    errorElement.style.display = 'flex';
+                }
+            }
+
+            hideError() {
+                const errorElement = document.getElementById('errorMessage');
+                if (errorElement) {
+                    errorElement.style.display = 'none';
+                }
+            }
+
+            showLoading() {
+                const loadingElement = document.getElementById('loadingOverlay');
+                if (loadingElement) {
+                    loadingElement.style.display = 'flex';
+                }
+            }
+
+            hideLoading() {
+                const loadingElement = document.getElementById('loadingOverlay');
+                if (loadingElement) {
+                    loadingElement.style.display = 'none';
+                }
+            }
+
+            generateMockData() {
+                return {
+                    ai_models: {
+                        supervised_accuracy: 0.85 + Math.random() * 0.1,
+                        unsupervised_accuracy: 0.78 + Math.random() * 0.1,
+                        ensemble_accuracy: 0.92 + Math.random() * 0.05
+                    },
+                    ai_training_data: [{
+                        training_cycle: Math.floor(Math.random() * 100),
+                        training_samples: Math.floor(Math.random() * 1000000) + 500000,
+                        training_loss: 0.1 + Math.random() * 0.3
+                    }]
+                };
+            }
+        }
+
+        // Global functions
+        function exportAIData() {
+            const notification = document.createElement('div');
+            notification.textContent = 'Exporting AI model data and performance metrics...';
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--success);
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 8px;
+                z-index: 1000;
+            `;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+            
+            // Simulate export process
+            setTimeout(() => {
+                window.aiAnalysis.showNotification('AI Data exported successfully', 'success');
+            }, 1500);
+        }
+
+        function hideError() {
+            window.aiAnalysis.hideError();
+        }
+
+        async function logout() {
+            try {
+                await fetch('/api/auth/logout', { 
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                window.location.href = '/auth';
+            } catch (error) {
+                console.error('Error logging out:', error);
+                window.location.href = '/auth';
+            }
+        }
+
+        // Initialize the enhanced AI analysis
+        document.addEventListener('DOMContentLoaded', function() {
+            window.aiAnalysis = new ProfessionalAIAnalysis();
+            window.aiAnalysis.showLoading();
+            setTimeout(() => {
+                window.aiAnalysis.initialize();
+            }, 1500); // Simulate loading time
+        });
+
+        // Global function aliases
+        function startAITraining() { window.aiAnalysis.startAITraining(); }
+        function pauseAITraining() { window.aiAnalysis.pauseAITraining(); }
+        function refreshAIData() { window.aiAnalysis.refreshAIData(); }
+        function toggleChartType() { window.aiAnalysis.toggleChartType(); }
+        function downloadChart() { window.aiAnalysis.downloadChart(); }
+        function toggleFullscreen() { window.aiAnalysis.toggleFullscreen(); }
+    </script>
+</body>
+</html>
